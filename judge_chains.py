@@ -46,11 +46,11 @@ class JudgeChains:
 
         Interview Scorer C: {scorer_C}
 
-        REQUIRED: Return the following as a valid JSON object with structure:
-        "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
+        RREQUIRED: Return the following as a valid JSON object with structure following this format
+        "chosen_ai_scorer":"ai scorer", "chosen_score":score, "short_sentence_reason":"reason", "short_piece_of_advice":"advice", "positive_feedback":"feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
-        The JSON object:
+        The Structured JSON object:
         """
 
         hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
@@ -74,11 +74,11 @@ class JudgeChains:
 
         Interview Scorer C: {scorer_C}
 
-        REQUIRED: Return the following as a valid JSON object with structure:
-        "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
+        RREQUIRED: Return the following as a valid JSON object with structure following this format
+        "chosen_ai_scorer":"ai scorer", "chosen_score":score, "short_sentence_reason":"reason", "short_piece_of_advice":"advice", "positive_feedback":"feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
-        The JSON object:
+        The Structured JSON object:
         """
 
         ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
@@ -103,11 +103,11 @@ class JudgeChains:
 
         Interview Scorer C: {scorer_C}
 
-        REQUIRED: Return the following as a valid JSON object with structure:
-        "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
+        RREQUIRED: Return the following as a valid JSON object with structure following this format
+        "chosen_ai_scorer":"ai scorer", "chosen_score":score, "short_sentence_reason":"reason", "short_piece_of_advice":"advice", "positive_feedback":"feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
-        The JSON object:
+        The Structured JSON object:
         """
 
 
