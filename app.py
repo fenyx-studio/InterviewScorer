@@ -216,11 +216,11 @@ if st.button("Submit Answer"):
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
         # "interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"
-        star_winner = state.judge_chains.get_hrjudgebasic1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_basic1=chain_results[1]['scorer_A_basic1'], scorer_B_basic2=chain_results[2]['scorer_B_basic2'], scorer_C_basic3=chain_results[3]['scorer_C_basic3'])
+        star_winner = state.judge_chains.hrjudgebasic1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_basic1=chain_results[1]['scorer_A_basic1'], scorer_B_basic2=chain_results[2]['scorer_B_basic2'], scorer_C_basic3=chain_results[3]['scorer_C_basic3'])
         # "interviewer_question", "interviewee_answer", "scorer_A_protagonist1", "scorer_B_protagonist2", "scorer_C_protagonist3"
-        protagonist_winner = state.judge_chains.get_ccjudgeprotag1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_protagonist1=chain_results[4]['scorer_A_protagonist1'], scorer_B_protagonist2=chain_results[5]['scorer_B_protagonist2'], scorer_C_protagonist3=chain_results[6]['scorer_C_protagonist3'])
+        protagonist_winner = state.judge_chains.ccjudgeprotag1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_protagonist1=chain_results[4]['scorer_A_protagonist1'], scorer_B_protagonist2=chain_results[5]['scorer_B_protagonist2'], scorer_C_protagonist3=chain_results[6]['scorer_C_protagonist3'])
         # "interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_B_structure2", "scorer_C_structure3"
-        structure_winner = state.judge_chains.get_pscjudgestructure1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_structure1=chain_results[7]['scorer_A_structure1'], scorer_B_structure2=chain_results[8]['scorer_B_structure2'], scorer_C_structure3=chain_results[9]['scorer_C_structure3'])
+        structure_winner = state.judge_chains.pscjudgestructure1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_structure1=chain_results[7]['scorer_A_structure1'], scorer_B_structure2=chain_results[8]['scorer_B_structure2'], scorer_C_structure3=chain_results[9]['scorer_C_structure3'])
 
     with st.expander("winning scores"):
         st.write(star_winner)
