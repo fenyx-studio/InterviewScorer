@@ -224,14 +224,14 @@ if st.button("Submit Answer"):
                         st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
         else:
 
-            async def async_run(chain, interviewer_question, interviewee_answer):
-                return await chain.arun(interviewer_question=interviewer_question, interviewee_response=interviewee_answer)
+            async def async_run(chain, interviewer_question, interviewee_answer, chain_id):
+                result = await chain.arun(interviewer_question=interviewer_question, interviewee_answer=interviewee_answer)
+                return chain_id, result
 
             async def generate_concurrently(chains, interviewer_question, interviewee_answer):
-                tasks = {async_run(chain, interviewer_question, interviewee_answer): chain_id for chain_id, chain in chains.items()}
+                tasks = [async_run(chain, interviewer_question, interviewee_answer, chain_id) for chain_id, chain in chains.items()]
                 for future in asyncio.as_completed(tasks):
-                    result = await future
-                    chain_id = tasks[future]
+                    chain_id, result = await future
                     chain_role = state.interview_chains.chain_ids[chain_id]
                     chain_responses.append(result)
 
