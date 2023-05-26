@@ -266,12 +266,20 @@ if st.button("Submit Answer"):
 
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
-        # "interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"
-        star_winner = state.judge_chains.hrjudgebasic1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_basic1=chain_results['embasic1_chain'], scorer_B_basic2=chain_results['psbasic2_chain'], scorer_C_basic3=chain_results['stbasic3_chain'])
-        # "interviewer_question", "interviewee_answer", "scorer_A_protagonist1", "scorer_B_protagonist2", "scorer_C_protagonist3"
-        protagonist_winner = state.judge_chains.ccjudgeprotag1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_protag1=chain_results['lcprotag1_chain'], scorer_B_protag2=chain_results['msprotag2_chain'], scorer_C_protag3=chain_results['tbprotag3_chain'])
-        # "interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_B_structure2", "scorer_C_structure3"
-        structure_winner = state.judge_chains.pscjudgestructure1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_structure1=chain_results['cestructure1_chain'], scorer_B_structure2=chain_results['opstructure2_chain'], scorer_C_structure3=chain_results['csstructure3_chain'])
+        async def async_run_judge(chain, interviewer_question, interviewee_answer, scorer_A, scorer_B, scorer_C):
+            return await chain.arun(interviewer_question=interviewer_question, interviewee_answer=interviewee_answer, scorer_A=scorer_A, scorer_B=scorer_B, scorer_C=scorer_C)
+
+        async def generate_concurrently_judge(chains, chain_results, interviewer_question, interviewee_answer):
+            tasks = [
+                async_run_judge(chains.hrjudgebasic1_chain, interviewer_question, interviewee_answer, chain_results['embasic1_chain'], chain_results['psbasic2_chain'], chain_results['stbasic3_chain']),
+                async_run_judge(chains.ccjudgeprotag1_chain, interviewer_question, interviewee_answer, chain_results['lcprotag1_chain'], chain_results['msprotag2_chain'], chain_results['tbprotag3_chain']),
+                async_run_judge(chains.pscjudgestructure1_chain, interviewer_question, interviewee_answer, chain_results['cestructure1_chain'], chain_results['opstructure2_chain'], chain_results['csstructure3_chain']),
+            ]
+            return await asyncio.gather(*tasks)
+
+        # Run the judge chains concurrently
+        star_winner, protagonist_winner, structure_winner = asyncio.run(generate_concurrently_judge(state.judge_chains, chain_results, test_interviewer_question, test_interviewee_answer))
+
 
     with st.expander("winning scores"):
         st.write(star_winner)
