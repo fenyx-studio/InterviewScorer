@@ -264,7 +264,7 @@ if st.button("Submit Answer"):
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
         async def async_run_judge(chain, interviewer_question, interviewee_answer, scorer_A, scorer_B, scorer_C):
-            return await chain.arun(interviewer_question=interviewer_question, interviewee_response=interviewee_answer, scorer_A=scorer_A, scorer_B=scorer_B, scorer_C=scorer_C)
+            return await chain.arun(interviewer_question=interviewer_question, interviewee_answer=interviewee_answer, scorer_A=scorer_A, scorer_B=scorer_B, scorer_C=scorer_C)
 
         async def generate_concurrently_judge(chains, chain_results, interviewer_question, interviewee_answer):
             tasks = {
