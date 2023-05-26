@@ -213,6 +213,31 @@ if st.button("Submit Answer"):
                 with score_expander:
                     st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
 
+    with st.expander(f"JSON Dictionary Results"):
+        st.write(chain_results)
+    # Display the score card
+    st.header("Score Card")
+
+    # Extract scores and feedback
+    basic_score = select_score(chain_responses, 'basic_score')[0]['basic_score']
+    basic_feedback = select_score(chain_responses, 'basic_score')[0]['note_to_judge']
+    protagonist_score = select_score(chain_responses, 'protagonist_score')[0]['protagonist_score']
+    protagonist_feedback = select_score(chain_responses, 'protagonist_score')[0]['note_to_judge']
+    structure_score = select_score(chain_responses, 'structure_score')[0]['structure_score']
+    structure_feedback = select_score(chain_responses, 'structure_score')[0]['note_to_judge']
+
+    with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
+        st.progress(basic_score*10)
+        st.markdown(f"**STAR Feedback:** {basic_feedback}")
+
+    with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
+        st.progress(protagonist_score*10)
+        st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
+
+    with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
+        st.progress(structure_score*10)
+        st.markdown(f"**Coherence Feedback:** {structure_feedback}")
+    
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
         # "interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"
@@ -227,28 +252,7 @@ if st.button("Submit Answer"):
         st.write(protagonist_winner)
         st.write(structure_winner)
 
-    # Extract scores and feedback
-    basic_score = select_score(chain_responses, 'basic_score')[0]['basic_score']
-    basic_feedback = select_score(chain_responses, 'basic_score')[0]['note_to_judge']
-    protagonist_score = select_score(chain_responses, 'protagonist_score')[0]['protagonist_score']
-    protagonist_feedback = select_score(chain_responses, 'protagonist_score')[0]['note_to_judge']
-    structure_score = select_score(chain_responses, 'structure_score')[0]['structure_score']
-    structure_feedback = select_score(chain_responses, 'structure_score')[0]['note_to_judge']
+    
 
-    with st.expander(f"JSON Dictionary Results"):
-        st.write(chain_results)
-    # Display the score card
-    st.header("Score Card")
-
-    with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
-        st.progress(basic_score*10)
-        st.markdown(f"**STAR Feedback:** {basic_feedback}")
-
-    with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
-        st.progress(protagonist_score*10)
-        st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
-
-    with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
-        st.progress(structure_score*10)
-        st.markdown(f"**Coherence Feedback:** {structure_feedback}")
+    
 
