@@ -237,6 +237,7 @@ if st.button("Submit Answer"):
 
                     # Parse the result as JSON
                     print(result)
+                    chain_results[chain_id] = result
 
                     try:
                         parsed_result = json.loads(result)
