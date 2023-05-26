@@ -29,9 +29,14 @@ llm3 = OpenAI(model_name='gpt-3.5-turbo',
 def run_chain(chain, interviewer_question, interviewee_response):
     return chain.run(interviewer_question=interviewer_question, interviewee_response=interviewee_response)
 
+# Get the current session state
+state = st.session_state
 
-interview_chains = InterviewChains()
-chains = interview_chains.get_chains(llm, llm2, llm3)
+# Initialize the state if it doesn't exist
+if 'interview_chains' not in state:
+    state.interview_chains = InterviewChains()
+
+chains = state.interview_chains.get_chains(llm, llm2, llm3)
 
 chain_responses = []
 
@@ -83,46 +88,46 @@ with expander:
     rubrics_tab, star_personas_tab, protag_personas_tab, structure_personas_tab, judges_personas_tab = st.tabs(["Scoring Rubrics", "STAR(R) Personas", "Protagonist Personas", "Structure Personas", "Judges Personas"])
 
     with rubrics_tab:
-        star_score_rubric = rubrics_tab.text_area('STAR(T) Scoring Rubric', interview_chains.get_component('star_rubric_component'))
-        protagonist_score_rubric = rubrics_tab.text_area('Protagonist Scoring Rubric', interview_chains.get_component('protag_rubric_component'))
-        structure_score_rubric = rubrics_tab.text_area('Structure Scoring Rubric', interview_chains.get_component('structure_rubric_component'))
+        star_score_rubric = rubrics_tab.text_area('STAR(T) Scoring Rubric', state.interview_chains.get_component('star_rubric_component'))
+        protagonist_score_rubric = rubrics_tab.text_area('Protagonist Scoring Rubric', state.interview_chains.get_component('protag_rubric_component'))
+        structure_score_rubric = rubrics_tab.text_area('Structure Scoring Rubric', state.interview_chains.get_component('structure_rubric_component'))
 
     with star_personas_tab:
-        star_scorer_1 = star_personas_tab.text_area('STAR(T) Scorer #1 Persona', interview_chains.get_component('starscorer1_persona_component'))
-        star_scorer_2 = star_personas_tab.text_area('STAR(T) Scorer #2 Persona', interview_chains.get_component('starscorer2_persona_component'))
-        star_scorer_3 = star_personas_tab.text_area('STAR(T) Scorer #3 Persona', interview_chains.get_component('starscorer3_persona_component'))
+        star_scorer_1 = star_personas_tab.text_area('STAR(T) Scorer #1 Persona', state.interview_chains.get_component('starscorer1_persona_component'))
+        star_scorer_2 = star_personas_tab.text_area('STAR(T) Scorer #2 Persona', state.interview_chains.get_component('starscorer2_persona_component'))
+        star_scorer_3 = star_personas_tab.text_area('STAR(T) Scorer #3 Persona', state.interview_chains.get_component('starscorer3_persona_component'))
 
     with protag_personas_tab:
-        protagonist_scorer_1 = protag_personas_tab.text_area('Protagonist Scorer #1 Persona', interview_chains.get_component('protagscorer1_persona_component'))
-        protagonist_scorer_2 = protag_personas_tab.text_area('Protagonist Scorer #2 Persona', interview_chains.get_component('protagscorer2_persona_component'))
-        protagonist_scorer_3 = protag_personas_tab.text_area('Protagonist Scorer #3 Persona', interview_chains.get_component('protagscorer3_persona_component'))
+        protagonist_scorer_1 = protag_personas_tab.text_area('Protagonist Scorer #1 Persona', state.interview_chains.get_component('protagscorer1_persona_component'))
+        protagonist_scorer_2 = protag_personas_tab.text_area('Protagonist Scorer #2 Persona', state.interview_chains.get_component('protagscorer2_persona_component'))
+        protagonist_scorer_3 = protag_personas_tab.text_area('Protagonist Scorer #3 Persona', state.interview_chains.get_component('protagscorer3_persona_component'))
 
     with structure_personas_tab:
-        structure_scorer_1 = structure_personas_tab.text_area('Structure Scorer #1 Persona', interview_chains.get_component('structure1_persona_component'))
-        structure_scorer_2 = structure_personas_tab.text_area('Structure Scorer #2 Persona', interview_chains.get_component('structure2_persona_component'))
-        structure_scorer_3 = structure_personas_tab.text_area('Structure Scorer #3 Persona', interview_chains.get_component('structure3_persona_component'))
+        structure_scorer_1 = structure_personas_tab.text_area('Structure Scorer #1 Persona', state.interview_chains.get_component('structure1_persona_component'))
+        structure_scorer_2 = structure_personas_tab.text_area('Structure Scorer #2 Persona', state.interview_chains.get_component('structure2_persona_component'))
+        structure_scorer_3 = structure_personas_tab.text_area('Structure Scorer #3 Persona', state.interview_chains.get_component('structure3_persona_component'))
 
     if st.button('Update Model'):
         
-        interview_chains.set_component('star_rubric_component', star_score_rubric)
-        interview_chains.set_component('protag_rubric_component', protagonist_score_rubric)
-        interview_chains.set_component('structure_rubric_component', structure_score_rubric)
+        state.interview_chains.set_component('star_rubric_component', star_score_rubric)
+        state.interview_chains.set_component('protag_rubric_component', protagonist_score_rubric)
+        state.interview_chains.set_component('structure_rubric_component', structure_score_rubric)
         
-        interview_chains.set_component('starscorer1_persona_component', star_scorer_1)
-        interview_chains.set_component('starscorer2_persona_component', star_scorer_2)
-        interview_chains.set_component('starscorer3_persona_component', star_scorer_3)
+        state.interview_chains.set_component('starscorer1_persona_component', star_scorer_1)
+        state.interview_chains.set_component('starscorer2_persona_component', star_scorer_2)
+        state.interview_chains.set_component('starscorer3_persona_component', star_scorer_3)
         
-        interview_chains.set_component('protagscorer1_persona_component', protagonist_scorer_1)
-        interview_chains.set_component('protagscorer2_persona_component', protagonist_scorer_2)
-        interview_chains.set_component('protagscorer3_persona_component', protagonist_scorer_3)
+        state.interview_chains.set_component('protagscorer1_persona_component', protagonist_scorer_1)
+        state.interview_chains.set_component('protagscorer2_persona_component', protagonist_scorer_2)
+        state.interview_chains.set_component('protagscorer3_persona_component', protagonist_scorer_3)
         
-        interview_chains.set_component('structure1_persona_component', structure_scorer_1)
-        interview_chains.set_component('structure2_persona_component', structure_scorer_2)
-        interview_chains.set_component('structure3_persona_component', structure_scorer_3)
-        chains = interview_chains.get_chains(llm, llm2, llm3)
+        state.interview_chains.set_component('structure1_persona_component', structure_scorer_1)
+        state.interview_chains.set_component('structure2_persona_component', structure_scorer_2)
+        state.interview_chains.set_component('structure3_persona_component', structure_scorer_3)
+        chains = state.interview_chains.get_chains(llm, llm2, llm3)
         st.write("Model has been updated!")
         st.write(star_score_rubric)
-        st.write(interview_chains.get_component('star_rubric_component'))  # Add your update code here
+        st.write(state.interview_chains.get_component('star_rubric_component'))  # Add your update code here
 
 
 # Record the answer or enter long form text
@@ -168,7 +173,7 @@ def get_emoji(score):
 
 # Score Card
 if st.button("Submit Answer"):
-    st.write(interview_chains.get_component('star_rubric_component'))
+    st.write(state.interview_chains.get_component('star_rubric_component'))
     with st.spinner('Scoring Interview Answers...'):
         with concurrent.futures.ThreadPoolExecutor() as executor:
             # Associate each future with its corresponding chain
@@ -180,7 +185,7 @@ if st.button("Submit Answer"):
                 
                 # Get the chain_id that produced this future
                 chain_id = future_to_chain_id[future]
-                chain_role = interview_chains.chain_ids[chain_id]
+                chain_role = state.interview_chains.chain_ids[chain_id]
 
                 # Parse the result as JSON
                 print(result)

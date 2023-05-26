@@ -46,6 +46,7 @@ class InterviewChains:
 
     def get_chains(self, llm, llm2, llm3):
         # Define prompt templates and chains here
+        
         prompt_engineeringmanager_basic_1_template = self.get_component('starscorer1_persona_component') + "\n" +self.get_component('star_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
         basic_score, note_to_judge, improvement_for_better_score
