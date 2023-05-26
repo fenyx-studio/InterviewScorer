@@ -46,9 +46,11 @@ class JudgeChains:
 
         Interview Scorer C: {scorer_C}
 
-        REQUIRED: Return the following as a JSON object:
+        REQUIRED: Return the following as a valid JSON object with structure:
         "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
 
         hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
@@ -72,9 +74,11 @@ class JudgeChains:
 
         Interview Scorer C: {scorer_C}
 
-        REQUIRED: Return the following as a JSON object:
+        REQUIRED: Return the following as a valid JSON object with structure:
         "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
 
         ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
@@ -99,10 +103,15 @@ class JudgeChains:
 
         Interview Scorer C: {scorer_C}
 
-        REQUIRED: Return the following as a JSON object:
+        REQUIRED: Return the following as a valid JSON object with structure:
         "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
+
+
+        
 
         pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
                             template=prompt_PSCJudge_structure_1_template)
