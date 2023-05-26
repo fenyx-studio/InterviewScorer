@@ -260,6 +260,7 @@ if st.button("Submit Answer"):
             # Assuming chains is a dictionary where the keys are chain_ids and the values are the chains themselves
             asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
 
+    judge1_failed, judge2_failed, judge3_failed = False
 
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
@@ -284,52 +285,68 @@ if st.button("Submit Answer"):
                 except json.JSONDecodeError:
                     print("Attempting to parse as key-value pairs...")
                     parsed_result = {k: v.strip() for k, v in re.findall(r'(.*?):\s*(.*)', result)}
-                
-                if chain_name == 'hrjudgebasic1_chain':
-                    with st.expander("STAR(T) Final Score"):
-                        # Extract the keys
-                        chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
-                        chosen_score = parsed_result.get('chosen_score')
-                        short_sentence_reason = parsed_result.get('short_sentence_reason')
-                        short_piece_of_advice = parsed_result.get('short_piece_of_advice')
-                        positive_feedback = parsed_result.get('positive_feedback')
 
-                        # Display the results
-                        st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
-                        st.write(f"**Chosen Score**: {chosen_score}")
-                        st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
-                        st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
-                        st.write(f"**Positive Feedback**: {positive_feedback}")
-                elif chain_name == 'ccjudgeprotag1_chain':
-                    with st.expander("Protagonist Final Score"):
-                        # Extract the keys
-                        chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
-                        chosen_score = parsed_result.get('chosen_score')
-                        short_sentence_reason = parsed_result.get('short_sentence_reason')
-                        short_piece_of_advice = parsed_result.get('short_piece_of_advice')
-                        positive_feedback = parsed_result.get('positive_feedback')
+                if not (judge1_failed or judge2_failed or judge3_failed):
+                    if chain_name == 'hrjudgebasic1_chain':
+                        with st.expander("STAR(T) Final Score"):
+                            # Extract the keys
+                            chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
+                            chosen_score = parsed_result.get('chosen_score')
+                            short_sentence_reason = parsed_result.get('short_sentence_reason')
+                            short_piece_of_advice = parsed_result.get('short_piece_of_advice')
+                            positive_feedback = parsed_result.get('positive_feedback')
 
-                        # Display the results
-                        st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
-                        st.write(f"**Chosen Score**: {chosen_score}")
-                        st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
-                        st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
-                        st.write(f"**Positive Feedback**: {positive_feedback}")
-                elif chain_name == 'pscjudgestructure1_chain':
-                    with st.expander("Structure Final Score"):
-                        # Extract the keys
-                        chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
-                        chosen_score = parsed_result.get('chosen_score')
-                        short_sentence_reason = parsed_result.get('short_sentence_reason')
-                        short_piece_of_advice = parsed_result.get('short_piece_of_advice')
-                        positive_feedback = parsed_result.get('positive_feedback')
+                            if chosen_ai_scorer and chosen_score and short_sentence_reason and short_piece_of_advice and positive_feedback:
+                                judge1_failed = False
+                                # Display the results
+                                st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
+                                st.write(f"**Chosen Score**: {chosen_score}")
+                                st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
+                                st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
+                                st.write(f"**Positive Feedback**: {positive_feedback}")
+                            else:
+                                judge1_failed = True
+                    elif chain_name == 'ccjudgeprotag1_chain':
+                        with st.expander("Protagonist Final Score"):
+                            # Extract the keys
+                            chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
+                            chosen_score = parsed_result.get('chosen_score')
+                            short_sentence_reason = parsed_result.get('short_sentence_reason')
+                            short_piece_of_advice = parsed_result.get('short_piece_of_advice')
+                            positive_feedback = parsed_result.get('positive_feedback')
 
-                        # Display the results
-                        st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
-                        st.write(f"**Chosen Score**: {chosen_score}")
-                        st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
-                        st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
-                        st.write(f"**Positive Feedback**: {positive_feedback}")
+                            if chosen_ai_scorer and chosen_score and short_sentence_reason and short_piece_of_advice and positive_feedback:
+                                judge1_failed = False
+                                # Display the results
+                                st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
+                                st.write(f"**Chosen Score**: {chosen_score}")
+                                st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
+                                st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
+                                st.write(f"**Positive Feedback**: {positive_feedback}")
+                            else:
+                                judge1_failed = True
+                    elif chain_name == 'pscjudgestructure1_chain':
+                        with st.expander("Structure Final Score"):
+                            # Extract the keys
+                            chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
+                            chosen_score = parsed_result.get('chosen_score')
+                            short_sentence_reason = parsed_result.get('short_sentence_reason')
+                            short_piece_of_advice = parsed_result.get('short_piece_of_advice')
+                            positive_feedback = parsed_result.get('positive_feedback')
+                            
+                            if chosen_ai_scorer and chosen_score and short_sentence_reason and short_piece_of_advice and positive_feedback:
+                                judge1_failed = False
+                                # Display the results
+                                st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
+                                st.write(f"**Chosen Score**: {chosen_score}")
+                                st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
+                                st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
+                                st.write(f"**Positive Feedback**: {positive_feedback}")
+                            else:
+                                judge1_failed = True
+                            
+                            
+
         asyncio.run(generate_concurrently_judge(state.judge_chains, chain_results, test_interviewer_question, test_interviewee_answer))
 
 
@@ -344,21 +361,23 @@ if st.button("Submit Answer"):
 
     with st.expander(f"JSON Dictionary Results"):
         st.write(chain_results)
-    # Display the score card
-    st.header("Score Card")
+    
+    if judge1_failed or judge2_failed or judge3_failed:
+        # Display the score card
+        st.header("Score Card")
 
-    with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
-        if basic_score is None:
-            basic_score = 0
-        st.markdown(f"**STAR Feedback:** {basic_feedback}")
+        with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
+            if basic_score is None:
+                basic_score = 0
+            st.markdown(f"**STAR Feedback:** {basic_feedback}")
 
-    with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
-        if protagonist_score is None:
-            protagonist_score = 0
-        st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
+        with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
+            if protagonist_score is None:
+                protagonist_score = 0
+            st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
 
-    with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
-        if structure_score is None:
-            structure_score = 0
-        st.markdown(f"**Coherence Feedback:** {structure_feedback}")
+        with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
+            if structure_score is None:
+                structure_score = 0
+            st.markdown(f"**Coherence Feedback:** {structure_feedback}")
 

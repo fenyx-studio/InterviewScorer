@@ -50,7 +50,7 @@ class JudgeChains:
         "chosen_ai_scorer":"ai scorer", "chosen_score":score, "short_sentence_reason":"reason", "short_piece_of_advice":"advice", "positive_feedback":"feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
-        The Structured JSON object:
+        The Structured JSON object structured with curly braces:
         """
 
         hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
@@ -78,7 +78,7 @@ class JudgeChains:
         "chosen_ai_scorer":"ai scorer", "chosen_score":score, "short_sentence_reason":"reason", "short_piece_of_advice":"advice", "positive_feedback":"feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
-        The Structured JSON object:
+        The Structured JSON object structured with curly braces:
         """
 
         ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
@@ -107,7 +107,7 @@ class JudgeChains:
         "chosen_ai_scorer":"ai scorer", "chosen_score":score, "short_sentence_reason":"reason", "short_piece_of_advice":"advice", "positive_feedback":"feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
-        The Structured JSON object:
+        The Structured JSON object structured with curly braces:
         """
 
 
