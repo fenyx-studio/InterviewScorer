@@ -13,12 +13,11 @@ from chains import InterviewChains
 import re
 
 
-
-
-os.environ['OPENAI_API_KEY']='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'
-os.environ['HUGGINGFACEHUB_API_TOKEN']='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'
 # Initialize OpenAI API
-openai.api_key = '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'
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
+os.environ['HUGGINGFACEHUB_API_TOKEN'] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+
 
 llm = OpenAI(model_name='gpt-3.5-turbo',
              temperature=0)
