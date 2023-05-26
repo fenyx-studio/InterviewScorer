@@ -228,40 +228,36 @@ if st.button("Submit Answer"):
                 return await chain.arun(interviewer_question=interviewer_question, interviewee_response=interviewee_answer)
 
             async def generate_concurrently(chains, interviewer_question, interviewee_answer):
-                tasks = [async_run(chain, interviewer_question, interviewee_answer) for chain in chains.values()]
-                return await asyncio.gather(*tasks)
+                tasks = {async_run(chain, interviewer_question, interviewee_answer): chain_id for chain_id, chain in chains.items()}
+                for future in asyncio.as_completed(tasks):
+                    result = await future
+                    chain_id = tasks[future]
+                    chain_role = state.interview_chains.chain_ids[chain_id]
+                    chain_responses.append(result)
 
+                    # Parse the result as JSON
+                    print(result)
+
+                    try:
+                        parsed_result = json.loads(result)
+                    except json.JSONDecodeError:
+                        print("Attempting to parse as key-value pairs...")
+                        parsed_result = {k: v.strip() for k, v in re.findall(r'(.*?):\s*(.*)', result)}
+                    
+                    # Extract the score and note to judge
+                    score = parsed_result.get('basic_score') or parsed_result.get('protagonist_score') or parsed_result.get('structure_score')
+                    note_to_judge = parsed_result.get('note_to_judge')
+
+                    # Get the emoji for the score
+                    emoji = get_emoji(score)
+
+                    # Display the success message with the emoji
+                    score_expander = st.expander(f"{chain_role}'s Score")
+                    with score_expander:
+                        st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
 
             # Assuming chains is a dictionary where the keys are chain_ids and the values are the chains themselves
-            responses = asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
-
-            # Assuming the .run method returns response, you can access it with:
-            chain_results = {chain_id: response for chain_id, response in zip(chains.keys(), responses)}
-
-            for chain_id, result in chain_results.items():
-                chain_role = state.interview_chains.chain_ids[chain_id]
-                chain_responses.append(result)
-
-                # Parse the result as JSON
-                print(result)
-
-                try:
-                    parsed_result = json.loads(result)
-                except json.JSONDecodeError:
-                    print("Attempting to parse as key-value pairs...")
-                    parsed_result = {k: v.strip() for k, v in re.findall(r'(.*?):\s*(.*)', result)}
-                
-                # Extract the score and note to judge
-                score = parsed_result.get('basic_score') or parsed_result.get('protagonist_score') or parsed_result.get('structure_score')
-                note_to_judge = parsed_result.get('note_to_judge')
-
-                # Get the emoji for the score
-                emoji = get_emoji(score)
-
-                # Display the success message with the emoji
-                score_expander = st.expander(f"{chain_role}'s Score")
-                with score_expander:
-                    st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
+            asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
 
 
     with st.spinner('Judges are deliberating...'):
