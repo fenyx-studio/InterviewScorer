@@ -33,18 +33,6 @@ def run_chain(chain, interviewer_question, interviewee_response):
 interview_chains = InterviewChains()
 chains = interview_chains.get_chains(llm, llm2, llm3)
 
-chain_roles = {
-    embasic1_chain: "STAR Scorer #1",
-    psbasic2_chain: "STAR Scorer #2",
-    stbasic3_chain: "STAR Scorer #3",
-    lcprotag1_chain: "Protagonist Scorer #1",
-    msprotag2_chain: "Protagonist Scorer #2",
-    tbprotag3_chain: "Protagonist Scorer #3",
-    cestructure1_chain: "Structure Scorer #1",
-    opstructure2_chain: "Structure Scorer #2",
-    csstructure3_chain: "Structure Scorer #3"
-}
-
 chain_responses = []
 
 test_interviewee_answer = """
@@ -178,12 +166,17 @@ def get_emoji(score):
 if st.button("Submit Answer"):
     with st.spinner('Scoring Interview Answers...'):
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = [executor.submit(run_chain, chain, test_interviewer_question, test_interviewee_answer) for chain in chains]
+            # Associate each future with its corresponding chain
+            future_to_chain = {executor.submit(run_chain, chain, test_interviewer_question, test_interviewee_answer): chain for chain in chains}
 
-            for i, future in enumerate(concurrent.futures.as_completed(futures), start=1):
+            for i, future in enumerate(concurrent.futures.as_completed(future_to_chain), start=1):
                 result = future.result()
                 chain_responses.append(result)
                 
+                # Get the chain that produced this future
+                chain = future_to_chain[future]
+                chain_role = interview_chains.chain_roles[chain]
+
                 # Parse the result as JSON
                 print(result)
                 try:
@@ -200,9 +193,10 @@ if st.button("Submit Answer"):
                 emoji = get_emoji(score)
 
                 # Display the success message with the emoji
-                score_expander = st.expander(f"Judge #{i}'s Score")
+                score_expander = st.expander(f"{chain_role}'s Score")
                 with score_expander:
-                    st.sidebar.success(f"**Judge #{i}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
+                    st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
+
 
 
     # Extract scores and feedback

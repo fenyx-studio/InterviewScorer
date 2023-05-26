@@ -154,5 +154,17 @@ class InterviewChains:
                             template=prompt_contentstrategist_structure_3_template)
         csstructure3_chain = LLMChain(llm=llm3, prompt=csstructure3_prompt)
 
+        self.chain_roles = {
+            embasic1_chain: "STAR Scorer #1",
+            psbasic2_chain: "STAR Scorer #2",
+            stbasic3_chain: "STAR Scorer #3",
+            lcprotag1_chain: "Protagonist Scorer #1",
+            msprotag2_chain: "Protagonist Scorer #2",
+            tbprotag3_chain: "Protagonist Scorer #3",
+            cestructure1_chain: "Structure Scorer #1",
+            opstructure2_chain: "Structure Scorer #2",
+            csstructure3_chain: "Structure Scorer #3"
+        }
+
         return [embasic1_chain, psbasic2_chain, stbasic3_chain, lcprotag1_chain, msprotag2_chain, 
                 tbprotag3_chain, cestructure1_chain, opstructure2_chain, csstructure3_chain]
