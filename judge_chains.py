@@ -95,16 +95,16 @@ class JudgeChains:
 
         Interview Scorer A: {scorer_A_structure1}
 
-        Interview Scorer B: {scorer_A_structure2}
+        Interview Scorer B: {scorer_B_structure2}
 
-        Interview Scorer C: {scorer_A_structure3}
+        Interview Scorer C: {scorer_C_structure3}
 
         REQUIRED: Return the following as a JSON object:
         chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
-        pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_A_structure2", "scorer_A_structure3"],
+        pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_B_structure2", "scorer_C_structure3"],
                             template=prompt_PSCJudge_structure_1_template)
         pscjudgestructure1_chain = LLMChain(llm=llm, prompt=pscjudgestructure1_prompt)
         return pscjudgestructure1_chain
