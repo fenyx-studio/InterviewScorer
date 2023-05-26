@@ -260,7 +260,7 @@ if st.button("Submit Answer"):
             # Assuming chains is a dictionary where the keys are chain_ids and the values are the chains themselves
             asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
 
-    judge1_failed, judge2_failed, judge3_failed = False
+    judge1_failed = judge2_failed = judge3_failed = False
 
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
