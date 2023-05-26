@@ -53,7 +53,7 @@ class InterviewChains:
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
-        hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_response_em_basic1", "scorer_response_ps_basic2", "scorer_response_st_basic3"],
+        hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"],
                             template=prompt_HRJudge_basic_1_template)
         hrjudgebasic1_chain = LLMChain(llm=llm, prompt=hrjudgebasic1_prompt)
 
@@ -78,7 +78,7 @@ class InterviewChains:
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
-        ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_response_em_basic1", "scorer_response_ps_basic2", "scorer_response_st_basic3"],
+        ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_protag1", "scorer_A_protag2", "scorer_A_protag3"],
                             template=prompt_CCJudge_protag_1_template)
         ccjudgeprotag1_chain = LLMChain(llm=llm, prompt=ccjudgeprotag1_prompt)
 
@@ -103,7 +103,7 @@ class InterviewChains:
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
-        pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_response_em_basic1", "scorer_response_ps_basic2", "scorer_response_st_basic3"],
+        pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_A_structure2", "scorer_A_structure3"],
                             template=prompt_PSCJudge_structure_1_template)
         pscjudgestructure1_chain = LLMChain(llm=llm, prompt=pscjudgestructure1_prompt)
 
