@@ -176,6 +176,8 @@ if st.button("Submit Answer"):
             # Associate each future with its corresponding chain
             future_to_chain_id = {executor.submit(run_chain, chain, test_interviewer_question, test_interviewee_answer): chain_id for chain_id, chain in chains.items()}
 
+            chain_results = {}
+            
             for i, future in enumerate(concurrent.futures.as_completed(future_to_chain_id), start=1):
                 result = future.result()
                 chain_responses.append(result)
@@ -186,6 +188,8 @@ if st.button("Submit Answer"):
 
                 # Parse the result as JSON
                 print(result)
+                chain_results[chain_id] = result
+
                 try:
                     parsed_result = json.loads(result)
                 except json.JSONDecodeError:
@@ -213,6 +217,9 @@ if st.button("Submit Answer"):
     structure_score = select_score(chain_responses, 'structure_score')[0]['structure_score']
     structure_feedback = select_score(chain_responses, 'structure_score')[0]['note_to_judge']
 
+    with st.expander(f"JSON Dictionary Results"):
+        st.write(chain_results)
+    # Display the score card
     st.header("Score Card")
 
     with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
