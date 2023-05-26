@@ -126,8 +126,6 @@ with expander:
         state.interview_chains.set_component('structure3_persona_component', structure_scorer_3)
         chains = state.interview_chains.get_chains(llm, llm2, llm3)
         st.write("Model has been updated!")
-        st.write(star_score_rubric)
-        st.write(state.interview_chains.get_component('star_rubric_component'))  # Add your update code here
 
 
 # Record the answer or enter long form text
@@ -173,7 +171,6 @@ def get_emoji(score):
 
 # Score Card
 if st.button("Submit Answer"):
-    st.write(state.interview_chains.get_component('star_rubric_component'))
     with st.spinner('Scoring Interview Answers...'):
         with concurrent.futures.ThreadPoolExecutor() as executor:
             # Associate each future with its corresponding chain
