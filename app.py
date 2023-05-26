@@ -2,7 +2,7 @@ import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 import openai
 import os
-from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain import PromptTemplate
 from langchain.chains import LLMChain
 import concurrent.futures
@@ -19,11 +19,11 @@ os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 os.environ['HUGGINGFACEHUB_API_TOKEN'] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 
 
-llm = OpenAI(model_name='gpt-3.5-turbo',
+llm = ChatOpenAI(model_name='gpt-3.5-turbo',
              temperature=0)
-llm2 = OpenAI(model_name='gpt-3.5-turbo',
+llm2 = ChatOpenAI(model_name='gpt-3.5-turbo',
              temperature=0.5)
-llm3 = OpenAI(model_name='gpt-3.5-turbo',
+llm3 = ChatOpenAI(model_name='gpt-3.5-turbo',
              temperature=1)
 
 # assuming all the chain objects and test variables are defined
