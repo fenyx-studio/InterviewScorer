@@ -13,17 +13,19 @@ from judge_chains import JudgeChains
 import re
 
 
+threaded = False
+
 # Initialize OpenAI API
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 os.environ['HUGGINGFACEHUB_API_TOKEN'] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 
 
-llm = OpenAI(model_name='text-davinci-003',
+llm = OpenAI(model_name='gpt-3.5-turbo',
              temperature=0)
-llm2 = OpenAI(model_name='text-davinci-003',
+llm2 = OpenAI(model_name='gpt-3.5-turbo',
              temperature=0.5)
-llm3 = OpenAI(model_name='text-davinci-003',
+llm3 = OpenAI(model_name='gpt-3.5-turbo',
              temperature=1)
 
 # assuming all the chain objects and test variables are defined
@@ -177,19 +179,46 @@ def get_emoji(score):
 # Score Card
 if st.button("Submit Answer"):
     with st.spinner('Scoring Interview Answers...'):
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            # Associate each future with its corresponding chain
-            future_to_chain_id = {executor.submit(run_chain, chain, test_interviewer_question, test_interviewee_answer): chain_id for chain_id, chain in chains.items()}
-
-            chain_results = {}
-            
-            for i, future in enumerate(concurrent.futures.as_completed(future_to_chain_id), start=1):
-                result = future.result()
-                chain_responses.append(result)
+        chain_results = {}
+        if threaded:
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                # Associate each future with its corresponding chain
+                future_to_chain_id = {executor.submit(run_chain, chain, test_interviewer_question, test_interviewee_answer): chain_id for chain_id, chain in chains.items()}
                 
-                # Get the chain_id that produced this future
-                chain_id = future_to_chain_id[future]
+                for i, future in enumerate(concurrent.futures.as_completed(future_to_chain_id), start=1):
+                    result = future.result()
+                    chain_responses.append(result)
+                    
+                    # Get the chain_id that produced this future
+                    chain_id = future_to_chain_id[future]
+                    chain_role = state.interview_chains.chain_ids[chain_id]
+
+                    # Parse the result as JSON
+                    print(result)
+                    chain_results[chain_id] = result
+
+                    try:
+                        parsed_result = json.loads(result)
+                    except json.JSONDecodeError:
+                        print("Attempting to parse as key-value pairs...")
+                        parsed_result = {k: v.strip() for k, v in re.findall(r'(.*?):\s*(.*)', result)}
+                    
+                    # Extract the score and note to judge
+                    score = parsed_result.get('basic_score') or parsed_result.get('protagonist_score') or parsed_result.get('structure_score')
+                    note_to_judge = parsed_result.get('note_to_judge')
+
+                    # Get the emoji for the score
+                    emoji = get_emoji(score)
+
+                    # Display the success message with the emoji
+                    score_expander = st.expander(f"{chain_role}'s Score")
+                    with score_expander:
+                        st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
+        else:
+            for chain_id, chain in chains.items():
                 chain_role = state.interview_chains.chain_ids[chain_id]
+                result = run_chain(chain, test_interviewer_question, test_interviewee_answer)
+                chain_responses.append(result)
 
                 # Parse the result as JSON
                 print(result)
@@ -213,31 +242,6 @@ if st.button("Submit Answer"):
                 with score_expander:
                     st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
 
-    with st.expander(f"JSON Dictionary Results"):
-        st.write(chain_results)
-    # Display the score card
-    st.header("Score Card")
-
-    # Extract scores and feedback
-    basic_score = select_score(chain_responses, 'basic_score')[0]['basic_score']
-    basic_feedback = select_score(chain_responses, 'basic_score')[0]['note_to_judge']
-    protagonist_score = select_score(chain_responses, 'protagonist_score')[0]['protagonist_score']
-    protagonist_feedback = select_score(chain_responses, 'protagonist_score')[0]['note_to_judge']
-    structure_score = select_score(chain_responses, 'structure_score')[0]['structure_score']
-    structure_feedback = select_score(chain_responses, 'structure_score')[0]['note_to_judge']
-
-    with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
-        st.progress(float(basic_score)*10)
-        st.markdown(f"**STAR Feedback:** {basic_feedback}")
-
-    with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
-        st.progress(float(protagonist_score)*10)
-        st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
-
-    with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
-        st.progress(float(structure_score)*10)
-        st.markdown(f"**Coherence Feedback:** {structure_feedback}")
-    
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
         # "interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"
@@ -252,7 +256,28 @@ if st.button("Submit Answer"):
         st.write(protagonist_winner)
         st.write(structure_winner)
 
-    
+    # Extract scores and feedback
+    basic_score = select_score(chain_responses, 'basic_score')[0]['basic_score']
+    basic_feedback = select_score(chain_responses, 'basic_score')[0]['note_to_judge']
+    protagonist_score = select_score(chain_responses, 'protagonist_score')[0]['protagonist_score']
+    protagonist_feedback = select_score(chain_responses, 'protagonist_score')[0]['note_to_judge']
+    structure_score = select_score(chain_responses, 'structure_score')[0]['structure_score']
+    structure_feedback = select_score(chain_responses, 'structure_score')[0]['note_to_judge']
 
-    
+    with st.expander(f"JSON Dictionary Results"):
+        st.write(chain_results)
+    # Display the score card
+    st.header("Score Card")
+
+    with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
+        st.progress(basic_score*10)
+        st.markdown(f"**STAR Feedback:** {basic_feedback}")
+
+    with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
+        st.progress(protagonist_score*10)
+        st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
+
+    with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
+        st.progress(structure_score*10)
+        st.markdown(f"**Coherence Feedback:** {structure_feedback}")
 
