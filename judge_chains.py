@@ -68,9 +68,9 @@ class JudgeChains:
 
         Interview Scorer A: {scorer_A_protag1}
 
-        Interview Scorer B: {scorer_A_protag2}
+        Interview Scorer B: {scorer_B_protag2}
 
-        Interview Scorer C: {scorer_A_protag3}
+        Interview Scorer C: {scorer_C_protag3}
 
         REQUIRED: Return the following as a JSON object:
         chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
