@@ -3,3 +3,4 @@ google-cloud-firestore
 langchain
 audio-recorder-streamlit
 openai
+promptlayer
