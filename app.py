@@ -225,7 +225,7 @@ if st.button("Submit Answer"):
         else:
 
             async def async_run(chain, interviewer_question, interviewee_answer):
-                return await chain.arun(interviewer_question=interviewer_question, interviewee_answer=interviewee_answer)
+                return await chain.arun(interviewer_question=interviewer_question, interviewee_response=interviewee_answer)
 
             async def generate_concurrently(chains, interviewer_question, interviewee_answer):
                 tasks = [async_run(chain, interviewer_question, interviewee_answer) for chain in chains.values()]
