@@ -54,7 +54,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        {"basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        ["basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
@@ -71,7 +71,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        \{"basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\}
+        ["basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
@@ -87,7 +87,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        \{"basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\}
+        ["basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
@@ -105,7 +105,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        \{"protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\}
+        ["protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
@@ -121,7 +121,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        \{"protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\}
+        ["protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
@@ -137,7 +137,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        \{"protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\}
+        ["protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
@@ -153,7 +153,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        \{"structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\}
+        ["structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
@@ -169,7 +169,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        \{"structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\}
+        ["structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
@@ -185,7 +185,7 @@ class InterviewChains:
         Interviewee Answer: {interviewee_response}
         
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        \{"structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"\}
+        ["structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"]
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
