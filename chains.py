@@ -49,7 +49,7 @@ class InterviewChains:
         
         prompt_engineeringmanager_basic_1_template = self.get_component('starscorer1_persona_component') + "\n" +self.get_component('star_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
-        basic_score, note_to_judge, improvement_for_better_score
+        "basic_score", "note_to_judge", "improvement_for_better_score"
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         Interviewer Question: {interviewer_question}
@@ -63,7 +63,7 @@ class InterviewChains:
 
         prompt_problemsolver_basic_2_template = self.get_component('starscorer2_persona_component') + "\n" +self.get_component('star_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
-        basic_score, note_to_judge, improvement_for_better_score
+        "basic_score", "note_to_judge", "improvement_for_better_score"
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         Interviewer Question: {interviewer_question}
@@ -76,7 +76,7 @@ class InterviewChains:
 
         prompt_strategicthinker_basic_3_template = self.get_component('starscorer3_persona_component') + "\n" +self.get_component('star_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
-        basic_score, note_to_judge, improvement_for_better_score
+        "basic_score", "note_to_judge", "improvement_for_better_score"
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         Interviewer Question: {interviewer_question}
@@ -104,7 +104,7 @@ class InterviewChains:
 
         prompt_motivationalspeaker_protag_2_template = self.get_component('protagscorer2_persona_component') + "\n" +self.get_component('protag_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
-        protagonist_score, note_to_judge, improvement_for_better_score
+        "protagonist_score", "note_to_judge", "improvement_for_better_score"
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         Interviewer Question: {interviewer_question}
@@ -117,7 +117,7 @@ class InterviewChains:
 
         prompt_teambuilder_protag_3_template = self.get_component('protagscorer3_persona_component') + "\n" +self.get_component('protag_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
-        protagonist_score, note_to_judge, improvement_for_better_score
+        "protagonist_score", "note_to_judge", "improvement_for_better_score"
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         Interviewer Question: {interviewer_question}
@@ -130,7 +130,7 @@ class InterviewChains:
 
         prompt_communicationexpert_structure_1_template = self.get_component('structure1_persona_component') + "\n" +self.get_component('structure_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
-        structure_score, note_to_judge, improvement_for_better_score
+        "structure_score", "note_to_judge", "improvement_for_better_score"
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         Interviewer Question: {interviewer_question}
@@ -143,7 +143,7 @@ class InterviewChains:
 
         prompt_orgpsychologist_structure_2_template = self.get_component('structure2_persona_component') + "\n" +self.get_component('structure_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
-        structure_score, note_to_judge, improvement_for_better_score
+        "structure_score", "note_to_judge", "improvement_for_better_score"
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         Interviewer Question: {interviewer_question}
@@ -156,7 +156,7 @@ class InterviewChains:
 
         prompt_contentstrategist_structure_3_template = self.get_component('structure3_persona_component') + "\n" +self.get_component('structure_rubric_component') + """
         REQUIRED: Return the following as a JSON object:
-        structure_score, note_to_judge, improvement_for_better_score
+        "structure_score", "note_to_judge", "improvement_for_better_score"
         The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         Interviewer Question: {interviewer_question}

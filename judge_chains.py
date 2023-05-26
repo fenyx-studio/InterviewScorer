@@ -47,7 +47,7 @@ class JudgeChains:
         Interview Scorer C: {scorer_C_basic3}
 
         REQUIRED: Return the following as a JSON object:
-        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+        "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
@@ -73,7 +73,7 @@ class JudgeChains:
         Interview Scorer C: {scorer_C_protag3}
 
         REQUIRED: Return the following as a JSON object:
-        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+        "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
@@ -100,7 +100,7 @@ class JudgeChains:
         Interview Scorer C: {scorer_C_structure3}
 
         REQUIRED: Return the following as a JSON object:
-        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+        "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
