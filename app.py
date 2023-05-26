@@ -218,7 +218,7 @@ if st.button("Submit Answer"):
         # "interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"
         star_winner = state.judge_chains.hrjudgebasic1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_basic1=chain_results['embasic1_chain'], scorer_B_basic2=chain_results['psbasic2_chain'], scorer_C_basic3=chain_results['stbasic3_chain'])
         # "interviewer_question", "interviewee_answer", "scorer_A_protagonist1", "scorer_B_protagonist2", "scorer_C_protagonist3"
-        protagonist_winner = state.judge_chains.ccjudgeprotag1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_protagonist1=chain_results['lcprotag1_chain'], scorer_B_protagonist2=chain_results['msprotag2_chain'], scorer_C_protagonist3=chain_results['tbprotag3_chain'])
+        protagonist_winner = state.judge_chains.ccjudgeprotag1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_protag1=chain_results['lcprotag1_chain'], scorer_B_protag2=chain_results['msprotag2_chain'], scorer_C_protag3=chain_results['tbprotag3_chain'])
         # "interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_B_structure2", "scorer_C_structure3"
         structure_winner = state.judge_chains.pscjudgestructure1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_structure1=chain_results['cestructure1_chain'], scorer_B_structure2=chain_results['opstructure2_chain'], scorer_C_structure3=chain_results['csstructure3_chain'])
 

@@ -77,7 +77,7 @@ class JudgeChains:
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
-        ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_protag1", "scorer_A_protag2", "scorer_A_protag3"],
+        ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_protag1", "scorer_B_protag2", "scorer_C_protag3"],
                             template=prompt_CCJudge_protag_1_template)
         ccjudgeprotag1_chain = LLMChain(llm=llm, prompt=ccjudgeprotag1_prompt)
         return ccjudgeprotag1_chain
