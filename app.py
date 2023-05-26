@@ -103,6 +103,7 @@ with expander:
         structure_scorer_3 = structure_personas_tab.text_area('Structure Scorer #3 Persona', interview_chains.get_component('structure3_persona_component'))
 
     if st.button('Update Model'):
+        print(star_score_rubric)
         interview_chains.set_component('star_rubric_component', star_score_rubric)
         interview_chains.set_component('protag_rubric_component', protagonist_score_rubric)
         interview_chains.set_component('structure_rubric_component', structure_score_rubric)
