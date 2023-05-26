@@ -11,6 +11,8 @@ from questions import InterviewQuestions
 from chains import InterviewChains
 from judge_chains import JudgeChains
 import re
+import asyncio
+
 
 
 threaded = False
@@ -32,6 +34,12 @@ llm3 = OpenAI(model_name='gpt-3.5-turbo',
 def run_chain(chain, interviewer_question, interviewee_response):
     return chain.run(interviewer_question=interviewer_question, interviewee_response=interviewee_response)
 
+async def async_run(chain, interviewer_question, interviewee_answer):
+    return await chain.arun(interviewer_question=interviewer_question, interviewee_answer=interviewee_answer)
+
+async def generate_concurrently(chains, interviewer_question, interviewee_answer):
+    tasks = [async_run(chain, interviewer_question, interviewee_answer) for chain in chains.values()]
+    return await asyncio.gather(*tasks)
 
 # Get the current session state
 state = st.session_state
@@ -215,14 +223,27 @@ if st.button("Submit Answer"):
                     with score_expander:
                         st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
         else:
-            for chain_id, chain in chains.items():
+
+            async def async_run(chain, interviewer_question, interviewee_answer):
+                return await chain.arun(interviewer_question=interviewer_question, interviewee_answer=interviewee_answer)
+
+            async def generate_concurrently(chains, interviewer_question, interviewee_answer):
+                tasks = [async_run(chain, interviewer_question, interviewee_answer) for chain in chains.values()]
+                return await asyncio.gather(*tasks)
+
+
+            # Assuming chains is a dictionary where the keys are chain_ids and the values are the chains themselves
+            responses = asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
+
+            # Assuming the .run method returns response, you can access it with:
+            chain_results = {chain_id: response for chain_id, response in zip(chains.keys(), responses)}
+
+            for chain_id, result in chain_results.items():
                 chain_role = state.interview_chains.chain_ids[chain_id]
-                result = run_chain(chain, test_interviewer_question, test_interviewee_answer)
                 chain_responses.append(result)
 
                 # Parse the result as JSON
                 print(result)
-                chain_results[chain_id] = result
 
                 try:
                     parsed_result = json.loads(result)
@@ -241,6 +262,7 @@ if st.button("Submit Answer"):
                 score_expander = st.expander(f"{chain_role}'s Score")
                 with score_expander:
                     st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
+
 
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
@@ -270,14 +292,14 @@ if st.button("Submit Answer"):
     st.header("Score Card")
 
     with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
-        st.progress(basic_score*10)
+        st.progress(float(basic_score)*10)
         st.markdown(f"**STAR Feedback:** {basic_feedback}")
 
     with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
-        st.progress(protagonist_score*10)
+        st.progress(float(protagonist_score)*10)
         st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
 
     with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
-        st.progress(structure_score*10)
+        st.progress(float(structure_score)*10)
         st.markdown(f"**Coherence Feedback:** {structure_feedback}")
 
