@@ -1,0 +1,4 @@
+streamlit
+google-cloud-firestore
+langchain
+audio-recorder-streamlit
