@@ -45,7 +45,7 @@ Over the next few days, I led my team in troubleshooting the issue. I split them
 Our response had a positive impact. Not only did we meet the deadline, but we also managed to improve the component's performance, making it 15% more efficient. The client was delighted with our proactive and transparent approach, and our management commended the team's effort. This experience taught me the value of clear communication, effective teamwork, and remaining calm under pressure.
 """
 
-test_interviewer_question = "Can you dtell me about a time when you faced a significant challenge at work and how you handled it?"
+test_interviewer_question = "Can you tell me about a time when you faced a significant challenge at work and how you handled it?"
 
 def select_score(responses, key):
     score_responses = []
@@ -168,6 +168,7 @@ def get_emoji(score):
 
 # Score Card
 if st.button("Submit Answer"):
+    st.write(interview_chains.get_component('star_rubric_component'))
     with st.spinner('Scoring Interview Answers...'):
         with concurrent.futures.ThreadPoolExecutor() as executor:
             # Associate each future with its corresponding chain
