@@ -18,6 +18,12 @@ class InterviewChains:
                                     Remember, as the Head of People Operations, your expertise in assessing cultural fit is crucial in this task. Your critical eye and professional judgment are needed to ensure the most appropriate score is selected. After making your decision, respond with the final chosen score only.""""
         }
 
+        self.chain_ids = {
+            'hrjudgebasic1_chain': "STAR Category Judge",
+            'ccjudgeprotag1_chain': "Protagonist Category Judge",
+            'pscjudgestructure1_chain': "Structure Category Judge"
+        }
+
 
     def set_component(self, component_name, new_text):
         if component_name in self.components:
