@@ -51,7 +51,7 @@ class JudgeChains:
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
-        hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"],
+        hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
                             template=prompt_HRJudge_basic_1_template)
         hrjudgebasic1_chain = LLMChain(llm=llm, prompt=hrjudgebasic1_prompt)
         return hrjudgebasic1_chain
@@ -77,7 +77,7 @@ class JudgeChains:
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
-        ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_protag1", "scorer_B_protag2", "scorer_C_protag3"],
+        ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
                             template=prompt_CCJudge_protag_1_template)
         ccjudgeprotag1_chain = LLMChain(llm=llm, prompt=ccjudgeprotag1_prompt)
         return ccjudgeprotag1_chain
@@ -104,7 +104,7 @@ class JudgeChains:
         The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
         """
 
-        pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_B_structure2", "scorer_C_structure3"],
+        pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A", "scorer_B", "scorer_C"],
                             template=prompt_PSCJudge_structure_1_template)
         pscjudgestructure1_chain = LLMChain(llm=llm, prompt=pscjudgestructure1_prompt)
         return pscjudgestructure1_chain
