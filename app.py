@@ -227,15 +227,15 @@ if st.button("Submit Answer"):
     structure_feedback = select_score(chain_responses, 'structure_score')[0]['note_to_judge']
 
     with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
-        st.progress(basic_score*10)
+        st.progress(float(basic_score)*10)
         st.markdown(f"**STAR Feedback:** {basic_feedback}")
 
     with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
-        st.progress(protagonist_score*10)
+        st.progress(float(protagonist_score)*10)
         st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
 
     with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
-        st.progress(structure_score*10)
+        st.progress(float(structure_score)*10)
         st.markdown(f"**Coherence Feedback:** {structure_feedback}")
     
     with st.spinner('Judges are deliberating...'):
