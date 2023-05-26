@@ -118,6 +118,7 @@ with expander:
         interview_chains.set_component('structure1_persona_component', structure_scorer_1)
         interview_chains.set_component('structure2_persona_component', structure_scorer_2)
         interview_chains.set_component('structure3_persona_component', structure_scorer_3)
+        chains = interview_chains.get_chains(llm, llm2, llm3)
         st.write("Model has been updated!")  # Add your update code here
 
 
