@@ -48,13 +48,16 @@ class InterviewChains:
         # Define prompt templates and chains here
         
         prompt_engineeringmanager_basic_1_template = self.get_component('starscorer1_persona_component') + "\n" +self.get_component('star_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        "basic_score", "note_to_judge", "improvement_for_better_score"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
 
         embasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
@@ -62,26 +65,32 @@ class InterviewChains:
         embasic1_chain = LLMChain(llm=llm, prompt=embasic1_prompt)
 
         prompt_problemsolver_basic_2_template = self.get_component('starscorer2_persona_component') + "\n" +self.get_component('star_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        "basic_score", "note_to_judge", "improvement_for_better_score"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
         psbasic2_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
                                 template=prompt_problemsolver_basic_2_template)
         psbasic2_chain = LLMChain(llm=llm2, prompt=psbasic2_prompt)
 
         prompt_strategicthinker_basic_3_template = self.get_component('starscorer3_persona_component') + "\n" +self.get_component('star_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        "basic_score", "note_to_judge", "improvement_for_better_score"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"basic_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
         stbasic3_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
                                 template=prompt_strategicthinker_basic_3_template)
@@ -90,78 +99,96 @@ class InterviewChains:
 
 
         prompt_leadershipcoach_protag_1_template = self.get_component('protagscorer1_persona_component') + "\n" +self.get_component('protag_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        protagonist_score, note_to_judge, improvement_for_better_score
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
         lcprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
                                 template=prompt_leadershipcoach_protag_1_template)
         lcprotag1_chain = LLMChain(llm=llm, prompt=lcprotag1_prompt)
 
         prompt_motivationalspeaker_protag_2_template = self.get_component('protagscorer2_persona_component') + "\n" +self.get_component('protag_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        "protagonist_score", "note_to_judge", "improvement_for_better_score"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
         msprotag2_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
                                 template=prompt_motivationalspeaker_protag_2_template)
         msprotag2_chain = LLMChain(llm=llm2, prompt=msprotag2_prompt)
 
         prompt_teambuilder_protag_3_template = self.get_component('protagscorer3_persona_component') + "\n" +self.get_component('protag_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        "protagonist_score", "note_to_judge", "improvement_for_better_score"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"protagonist_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
         tbprotag3_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
                                 template=prompt_teambuilder_protag_3_template)
         tbprotag3_chain = LLMChain(llm=llm3, prompt=tbprotag3_prompt)
 
         prompt_communicationexpert_structure_1_template = self.get_component('structure1_persona_component') + "\n" +self.get_component('structure_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        "structure_score", "note_to_judge", "improvement_for_better_score"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
         cestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
                                 template=prompt_communicationexpert_structure_1_template)
         cestructure1_chain = LLMChain(llm=llm, prompt=cestructure1_prompt)
 
         prompt_orgpsychologist_structure_2_template = self.get_component('structure2_persona_component') + "\n" +self.get_component('structure_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        "structure_score", "note_to_judge", "improvement_for_better_score"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
         opstructure2_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
                                 template=prompt_orgpsychologist_structure_2_template)
         opstructure2_chain = LLMChain(llm=llm2, prompt=opstructure2_prompt)
 
         prompt_contentstrategist_structure_3_template = self.get_component('structure3_persona_component') + "\n" +self.get_component('structure_rubric_component') + """
-        REQUIRED: Return the following as a JSON object:
-        "structure_score", "note_to_judge", "improvement_for_better_score"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-
+        
         Interviewer Question: {interviewer_question}
 
         Interviewee Answer: {interviewee_response}
+        
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        {"structure_score":"score", "note_to_judge":"note", "improvement_for_better_score":"improvement"}
+        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+
+        The JSON object:
         """
         csstructure3_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"],
                             template=prompt_contentstrategist_structure_3_template)
