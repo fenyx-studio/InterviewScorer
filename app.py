@@ -330,6 +330,8 @@ if st.button("Submit Answer"):
                         st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
                         st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
                         st.write(f"**Positive Feedback**: {positive_feedback}")
+            asyncio.run(generate_concurrently_judge(state.judge_chains, chain_results, test_interviewer_question, test_interviewee_answer))
+
 
 
     # Extract scores and feedback
