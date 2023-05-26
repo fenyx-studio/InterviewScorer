@@ -300,14 +300,20 @@ if st.button("Submit Answer"):
     st.header("Score Card")
 
     with st.expander(f"## STAR Score: {get_emoji(basic_score)} {basic_score}/10"):
+        if basic_score is None:
+            basic_score = 0
         st.progress(float(basic_score)*10)
         st.markdown(f"**STAR Feedback:** {basic_feedback}")
 
     with st.expander(f"## Protagonist Score: {get_emoji(protagonist_score)} {protagonist_score}/10"):
+        if protagonist_score is None:
+            protagonist_score = 0
         st.progress(float(protagonist_score)*10)
         st.markdown(f"**Protagonist Feedback:** {protagonist_feedback}")
 
     with st.expander(f"## Coherence Score: {get_emoji(structure_score)} {structure_score}/10"):
+        if structure_score is None:
+            structure_score = 0
         st.progress(float(structure_score)*10)
         st.markdown(f"**Coherence Feedback:** {structure_feedback}")
 
