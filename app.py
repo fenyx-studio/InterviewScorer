@@ -9,6 +9,7 @@ import concurrent.futures
 import json
 from questions import InterviewQuestions
 from chains import InterviewChains
+from judge_chains import JudgeChains
 import re
 
 
@@ -29,12 +30,16 @@ llm3 = OpenAI(model_name='gpt-3.5-turbo',
 def run_chain(chain, interviewer_question, interviewee_response):
     return chain.run(interviewer_question=interviewer_question, interviewee_response=interviewee_response)
 
+
 # Get the current session state
 state = st.session_state
 
 # Initialize the state if it doesn't exist
 if 'interview_chains' not in state:
     state.interview_chains = InterviewChains()
+
+if 'judge_chains' not in state:
+    state.judge_chains = JudgeChains(llm=llm)
 
 chains = state.interview_chains.get_chains(llm, llm2, llm3)
 
@@ -208,6 +213,19 @@ if st.button("Submit Answer"):
                 with score_expander:
                     st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
 
+    with st.spinner('Judges are deliberating...'):
+        # associate each future with its corresponding chain
+        # "interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"
+        star_winner = state.judge_chains.get_hrjudgebasic1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_basic1=chain_results[1]['scorer_A_basic1'], scorer_B_basic2=chain_results[2]['scorer_B_basic2'], scorer_C_basic3=chain_results[3]['scorer_C_basic3'])
+        # "interviewer_question", "interviewee_answer", "scorer_A_protagonist1", "scorer_B_protagonist2", "scorer_C_protagonist3"
+        protagonist_winner = state.judge_chains.get_ccjudgeprotag1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_protagonist1=chain_results[4]['scorer_A_protagonist1'], scorer_B_protagonist2=chain_results[5]['scorer_B_protagonist2'], scorer_C_protagonist3=chain_results[6]['scorer_C_protagonist3'])
+        # "interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_B_structure2", "scorer_C_structure3"
+        structure_winner = state.judge_chains.get_pscjudgestructure1_chain.run(interviewer_question=test_interviewer_question, interviewee_answer=test_interviewee_answer, scorer_A_structure1=chain_results[7]['scorer_A_structure1'], scorer_B_structure2=chain_results[8]['scorer_B_structure2'], scorer_C_structure3=chain_results[9]['scorer_C_structure3'])
+
+    with st.expander("winning scores"):
+        st.write(star_winner)
+        st.write(protagonist_winner)
+        st.write(structure_winner)
 
     # Extract scores and feedback
     basic_score = select_score(chain_responses, 'basic_score')[0]['basic_score']

@@ -2,8 +2,8 @@
 from langchain import PromptTemplate
 from langchain.chains import LLMChain
 
-class InterviewChains:
-    def __init__(self):
+class JudgeChains:
+    def __init__(self, llm):
         self.components = {
             'starjudge_persona_component': "As the Head of People Operations focusing on Cultural Fit, your role is to critically review the Basic Scores provided by three separate AI Interview Scorers. Each Scorer has evaluated the same interview response based on the Basic Score criteria and provided a score out of 10, along with a single note explaining their considerations for the score. Remember, as the Head of People Operations, your expertise in assessing cultural fit is crucial in this task. Your critical eye and professional judgment are needed to ensure the most appropriate score is selected. After making your decision, respond with the final chosen score only.",
             'protagjudge_persona_component': "As a Career Coach acting as a judge, your role is to critically review the Protagonist Scores provided by three separate AI Interview Scorers. Each Scorer has evaluated the same interview response based on the Protagonist Score criteria and provided a score out of 10, along with a single note explaining their considerations for the score. Remember, as a Career Coach, your expertise in career development and job interviews is crucial in this task. Your critical eye and professional judgment are needed to ensure the most appropriate score is selected. After making your decision, respond with the final chosen score only.",
@@ -15,7 +15,7 @@ class InterviewChains:
                                     Consistency: Is the score consistent with the quality of the interview response? Does the note reflect this consistency?
                                     Detail: Does the note provide specific details that justify the score? Are these details relevant and meaningful?
                                     Fairness: Does the score seem fair based on the interview response? Does the note reflect a fair and unbiased evaluation?
-                                    Remember, as the Head of People Operations, your expertise in assessing cultural fit is crucial in this task. Your critical eye and professional judgment are needed to ensure the most appropriate score is selected. After making your decision, respond with the final chosen score only.""""
+                                    Remember, as the Head of People Operations, your expertise in assessing cultural fit is crucial in this task. Your critical eye and professional judgment are needed to ensure the most appropriate score is selected. After making your decision, respond with the final chosen score only."""
         }
 
         self.chain_ids = {
@@ -24,7 +24,100 @@ class InterviewChains:
             'pscjudgestructure1_chain': "Structure Category Judge"
         }
 
+        self.hrjudgebasic1_chain = self._create_hrjudgebasic1_chain(llm)
+        self.ccjudgeprotag1_chain = self._create_ccjudgeprotag1_chain(llm)
+        self.pscjudgestructure1_chain = self._create_pscjudgestructure1_chain(llm)
 
+
+    def _create_hrjudgebasic1_chain(self, llm):
+        # Define prompt templates and chains here
+        prompt_HRJudge_basic_1_template = self.get_component('starjudge_persona_component') + "\n" +self.get_component('star_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
+        Interviewer Question:
+        {interviewer_question}
+
+        Interviewee Answer:
+        {interviewee_answer}
+
+        Here are the three scores from the three AI Scorers-
+
+        Interview Scorer A: {scorer_A_basic1}
+
+        Interview Scorer B: {scorer_B_basic2}
+
+        Interview Scorer C: {scorer_C_basic3}
+
+        REQUIRED: Return the following as a JSON object:
+        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+        The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+        """
+
+        hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"],
+                            template=prompt_HRJudge_basic_1_template)
+        hrjudgebasic1_chain = LLMChain(llm=llm, prompt=hrjudgebasic1_prompt)
+        return hrjudgebasic1_chain
+    
+    def _create_ccjudgeprotag1_chain(self, llm):
+        prompt_CCJudge_protag_1_template = self.get_component('protagjudge_persona_component') + "\n" +self.get_component('protag_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
+        Interviewer Question:
+        {interviewer_question}
+
+        Interviewee Answer:
+        {interviewee_answer}
+
+        Here are the three scores from the three AI Scorers-
+
+        Interview Scorer A: {scorer_A_protag1}
+
+        Interview Scorer B: {scorer_A_protag2}
+
+        Interview Scorer C: {scorer_A_protag3}
+
+        REQUIRED: Return the following as a JSON object:
+        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+        The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+        """
+
+        ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_protag1", "scorer_A_protag2", "scorer_A_protag3"],
+                            template=prompt_CCJudge_protag_1_template)
+        ccjudgeprotag1_chain = LLMChain(llm=llm, prompt=ccjudgeprotag1_prompt)
+        return ccjudgeprotag1_chain
+
+    def _create_pscjudgestructure1_chain(self, llm):
+        prompt_PSCJudge_structure_1_template = self.get_component('structurejudge_persona_component') + "\n" +self.get_component('structure_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
+
+        Interviewer Question:
+        {interviewer_question}
+
+        Interviewee Answer:
+        {interviewee_answer}
+
+        Here are the three scores from the three AI Scorers-
+
+        Interview Scorer A: {scorer_A_structure1}
+
+        Interview Scorer B: {scorer_A_structure2}
+
+        Interview Scorer C: {scorer_A_structure3}
+
+        REQUIRED: Return the following as a JSON object:
+        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+        The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+        """
+
+        pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_A_structure2", "scorer_A_structure3"],
+                            template=prompt_PSCJudge_structure_1_template)
+        pscjudgestructure1_chain = LLMChain(llm=llm, prompt=pscjudgestructure1_prompt)
+        return pscjudgestructure1_chain
+
+    def get_hrjudgebasic1_chain(self):
+        return self.hrjudgebasic1_chain
+
+    def get_ccjudgeprotag1_chain(self):
+        return self.ccjudgeprotag1_chain
+
+    def get_pscjudgestructure1_chain(self):
+        return self.pscjudgestructure1_chain
+    
     def set_component(self, component_name, new_text):
         if component_name in self.components:
             self.components[component_name] = new_text
@@ -37,81 +130,81 @@ class InterviewChains:
         else:
             raise KeyError(f"{component_name} does not exist")
 
-    def get_chains(self, llm, llm2, llm3):
-        # Define prompt templates and chains here
-        prompt_HRJudge_basic_1_template = self.get_component('starjudge_persona_component') + "\n" +self.get_component('star_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
-        Interviewer Question:
-        {interviewer_question}
+    # def get_chains(self, llm, llm2, llm3):
+    #     # Define prompt templates and chains here
+    #     prompt_HRJudge_basic_1_template = self.get_component('starjudge_persona_component') + "\n" +self.get_component('star_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
+    #     Interviewer Question:
+    #     {interviewer_question}
 
-        Interviewee Answer:
-        {interviewee_answer}
+    #     Interviewee Answer:
+    #     {interviewee_answer}
 
-        Here are the three scores from the three AI Scorers-
+    #     Here are the three scores from the three AI Scorers-
 
-        Interview Scorer A: {scorer_response_em_basic1}
+    #     Interview Scorer A: {scorer_A_basic1}
 
-        Interview Scorer B: {scorer_response_ps_basic2}
+    #     Interview Scorer B: {scorer_B_basic2}
 
-        Interview Scorer C: {scorer_response_st_basic3}
+    #     Interview Scorer C: {scorer_C_basic3}
 
-        REQUIRED: Return the following as a JSON object:
-        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
-        The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-        """
+    #     REQUIRED: Return the following as a JSON object:
+    #     chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+    #     The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+    #     """
 
-        hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"],
-                            template=prompt_HRJudge_basic_1_template)
-        hrjudgebasic1_chain = LLMChain(llm=llm, prompt=hrjudgebasic1_prompt)
-
-
-        prompt_CCJudge_protag_1_template = self.get_component('protagjudge_persona_component') + "\n" +self.get_component('protag_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
-        Interviewer Question:
-        {interviewer_question}
-
-        Interviewee Answer:
-        {interviewee_answer}
-
-        Here are the three scores from the three AI Scorers-
-
-        Interview Scorer A: {scorer_response_em_basic1}
-
-        Interview Scorer B: {scorer_response_ps_basic2}
-
-        Interview Scorer C: {scorer_response_st_basic3}
-
-        REQUIRED: Return the following as a JSON object:
-        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
-        The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-        """
-
-        ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_protag1", "scorer_A_protag2", "scorer_A_protag3"],
-                            template=prompt_CCJudge_protag_1_template)
-        ccjudgeprotag1_chain = LLMChain(llm=llm, prompt=ccjudgeprotag1_prompt)
-
-        prompt_PSCJudge_structure_1_template = self.get_component('structurejudge_persona_component') + "\n" +self.get_component('structure_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
-
-        Interviewer Question:
-        {interviewer_question}
-
-        Interviewee Answer:
-        {interviewee_answer}
-
-        Here are the three scores from the three AI Scorers-
-
-        Interview Scorer A: {scorer_response_em_basic1}
-
-        Interview Scorer B: {scorer_response_ps_basic2}
-
-        Interview Scorer C: {scorer_response_st_basic3}
-
-        REQUIRED: Return the following as a JSON object:
-        chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
-        The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
-        """
-
-        pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_A_structure2", "scorer_A_structure3"],
-                            template=prompt_PSCJudge_structure_1_template)
-        pscjudgestructure1_chain = LLMChain(llm=llm, prompt=pscjudgestructure1_prompt)
+    #     hrjudgebasic1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_basic1", "scorer_B_basic2", "scorer_C_basic3"],
+    #                         template=prompt_HRJudge_basic_1_template)
+    #     hrjudgebasic1_chain = LLMChain(llm=llm, prompt=hrjudgebasic1_prompt)
 
 
-        return [hrjudgebasic1_chain, ccjudgeprotag1_chain, pscjudgestructure1_chain]
+    #     prompt_CCJudge_protag_1_template = self.get_component('protagjudge_persona_component') + "\n" +self.get_component('protag_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
+    #     Interviewer Question:
+    #     {interviewer_question}
+
+    #     Interviewee Answer:
+    #     {interviewee_answer}
+
+    #     Here are the three scores from the three AI Scorers-
+
+    #     Interview Scorer A: {scorer_A_protag1}
+
+    #     Interview Scorer B: {scorer_A_protag2}
+
+    #     Interview Scorer C: {scorer_A_protag3}
+
+    #     REQUIRED: Return the following as a JSON object:
+    #     chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+    #     The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+    #     """
+
+    #     ccjudgeprotag1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_protag1", "scorer_A_protag2", "scorer_A_protag3"],
+    #                         template=prompt_CCJudge_protag_1_template)
+    #     ccjudgeprotag1_chain = LLMChain(llm=llm, prompt=ccjudgeprotag1_prompt)
+
+    #     prompt_PSCJudge_structure_1_template = self.get_component('structurejudge_persona_component') + "\n" +self.get_component('structure_rubric_component') + "\n" +self.get_component('judge_rubric_component') + """
+
+    #     Interviewer Question:
+    #     {interviewer_question}
+
+    #     Interviewee Answer:
+    #     {interviewee_answer}
+
+    #     Here are the three scores from the three AI Scorers-
+
+    #     Interview Scorer A: {scorer_A_structure1}
+
+    #     Interview Scorer B: {scorer_A_structure2}
+
+    #     Interview Scorer C: {scorer_A_structure3}
+
+    #     REQUIRED: Return the following as a JSON object:
+    #     chosen_ai_scorer, chosen_score, short_sentence_reason, short_piece_of_advice, positive_feedback
+    #     The above five keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+    #     """
+
+    #     pscjudgestructure1_prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_answer", "scorer_A_structure1", "scorer_A_structure2", "scorer_A_structure3"],
+    #                         template=prompt_PSCJudge_structure_1_template)
+    #     pscjudgestructure1_chain = LLMChain(llm=llm, prompt=pscjudgestructure1_prompt)
+
+
+    #     return [hrjudgebasic1_chain, ccjudgeprotag1_chain, pscjudgestructure1_chain]
