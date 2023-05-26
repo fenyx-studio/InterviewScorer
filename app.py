@@ -1,7 +1,6 @@
 import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 import openai
-from streamlit_tags import st_tags
 import os
 from langchain.llms import OpenAI
 from langchain import PromptTemplate
