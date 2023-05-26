@@ -260,7 +260,7 @@ if st.button("Submit Answer"):
             # Assuming chains is a dictionary where the keys are chain_ids and the values are the chains themselves
             asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
 
-    judge1_failed = judge2_failed = judge3_failed = False
+    judge_failed = {'judge1_failed': False, 'judge2_failed': False, 'judge3_failed': False}
 
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
@@ -268,7 +268,7 @@ if st.button("Submit Answer"):
             result = await chain.arun(interviewer_question=interviewer_question, interviewee_answer=interviewee_answer, scorer_A=scorer_A, scorer_B=scorer_B, scorer_C=scorer_C)
             return chain_name, result
 
-        async def generate_concurrently_judge(chains, chain_results, interviewer_question, interviewee_answer):
+        async def generate_concurrently_judge(chains, chain_results, interviewer_question, interviewee_answer, judge_failed):
             tasks = {
                 'hrjudgebasic1_chain': async_run_judge(chains.hrjudgebasic1_chain, interviewer_question, interviewee_answer, chain_results['embasic1_chain'], chain_results['psbasic2_chain'], chain_results['stbasic3_chain'], 'hrjudgebasic1_chain'),
                 'ccjudgeprotag1_chain': async_run_judge(chains.ccjudgeprotag1_chain, interviewer_question, interviewee_answer, chain_results['lcprotag1_chain'], chain_results['msprotag2_chain'], chain_results['tbprotag3_chain'], 'ccjudgeprotag1_chain'),
@@ -286,7 +286,7 @@ if st.button("Submit Answer"):
                     print("Attempting to parse as key-value pairs...")
                     parsed_result = {k: v.strip() for k, v in re.findall(r'(.*?):\s*(.*)', result)}
 
-                if not (judge1_failed or judge2_failed or judge3_failed):
+                if not (judge_failed['judge1_failed'] or judge_failed['judge2_failed'] or judge_failed['judge3_failed']):
                     if chain_name == 'hrjudgebasic1_chain':
                         with st.expander("STAR(T) Final Score"):
                             # Extract the keys
@@ -297,7 +297,7 @@ if st.button("Submit Answer"):
                             positive_feedback = parsed_result.get('positive_feedback')
 
                             if chosen_ai_scorer and chosen_score and short_sentence_reason and short_piece_of_advice and positive_feedback:
-                                judge1_failed = False
+                                judge_failed['judge1_failed'] = False
                                 # Display the results
                                 st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
                                 st.write(f"**Chosen Score**: {chosen_score}")
@@ -305,7 +305,7 @@ if st.button("Submit Answer"):
                                 st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
                                 st.write(f"**Positive Feedback**: {positive_feedback}")
                             else:
-                                judge1_failed = True
+                                judge_failed['judge1_failed'] = True
                     elif chain_name == 'ccjudgeprotag1_chain':
                         with st.expander("Protagonist Final Score"):
                             # Extract the keys
@@ -316,7 +316,7 @@ if st.button("Submit Answer"):
                             positive_feedback = parsed_result.get('positive_feedback')
 
                             if chosen_ai_scorer and chosen_score and short_sentence_reason and short_piece_of_advice and positive_feedback:
-                                judge1_failed = False
+                                judge_failed['judge1_failed'] = False
                                 # Display the results
                                 st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
                                 st.write(f"**Chosen Score**: {chosen_score}")
@@ -324,7 +324,7 @@ if st.button("Submit Answer"):
                                 st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
                                 st.write(f"**Positive Feedback**: {positive_feedback}")
                             else:
-                                judge1_failed = True
+                                judge_failed['judge1_failed'] = True
                     elif chain_name == 'pscjudgestructure1_chain':
                         with st.expander("Structure Final Score"):
                             # Extract the keys
@@ -335,7 +335,7 @@ if st.button("Submit Answer"):
                             positive_feedback = parsed_result.get('positive_feedback')
                             
                             if chosen_ai_scorer and chosen_score and short_sentence_reason and short_piece_of_advice and positive_feedback:
-                                judge1_failed = False
+                                judge_failed['judge1_failed'] = False
                                 # Display the results
                                 st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
                                 st.write(f"**Chosen Score**: {chosen_score}")
@@ -343,11 +343,11 @@ if st.button("Submit Answer"):
                                 st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
                                 st.write(f"**Positive Feedback**: {positive_feedback}")
                             else:
-                                judge1_failed = True
+                                judge_failed['judge1_failed'] = True
                             
                             
 
-        asyncio.run(generate_concurrently_judge(state.judge_chains, chain_results, test_interviewer_question, test_interviewee_answer))
+        asyncio.run(generate_concurrently_judge(state.judge_chains, chain_results, test_interviewer_question, test_interviewee_answer, judge_failed))
 
 
 
@@ -362,7 +362,7 @@ if st.button("Submit Answer"):
     with st.expander(f"JSON Dictionary Results"):
         st.write(chain_results)
     
-    if judge1_failed or judge2_failed or judge3_failed:
+    if (judge_failed['judge1_failed'] or judge_failed['judge2_failed'] or judge_failed['judge3_failed']):
         # Display the score card
         st.header("Score Card")
 
