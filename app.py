@@ -167,15 +167,15 @@ if st.button("Submit Answer"):
     with st.spinner('Scoring Interview Answers...'):
         with concurrent.futures.ThreadPoolExecutor() as executor:
             # Associate each future with its corresponding chain
-            future_to_chain = {executor.submit(run_chain, chain, test_interviewer_question, test_interviewee_answer): chain for chain in chains}
+            future_to_chain_id = {executor.submit(run_chain, chain, test_interviewer_question, test_interviewee_answer): chain_id for chain_id, chain in chains.items()}
 
-            for i, future in enumerate(concurrent.futures.as_completed(future_to_chain), start=1):
+            for i, future in enumerate(concurrent.futures.as_completed(future_to_chain_id), start=1):
                 result = future.result()
                 chain_responses.append(result)
                 
-                # Get the chain that produced this future
-                chain = future_to_chain[future]
-                chain_role = interview_chains.chain_roles[chain]
+                # Get the chain_id that produced this future
+                chain_id = future_to_chain_id[future]
+                chain_role = interview_chains.chain_ids[chain_id]
 
                 # Parse the result as JSON
                 print(result)
@@ -196,7 +196,6 @@ if st.button("Submit Answer"):
                 score_expander = st.expander(f"{chain_role}'s Score")
                 with score_expander:
                     st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Note to judge:** {note_to_judge} \n\n**Score:** {score}/10", icon=emoji)
-
 
 
     # Extract scores and feedback
