@@ -264,24 +264,76 @@ if st.button("Submit Answer"):
     with st.spinner('Judges are deliberating...'):
         # associate each future with its corresponding chain
         async def async_run_judge(chain, interviewer_question, interviewee_answer, scorer_A, scorer_B, scorer_C):
-            return await chain.arun(interviewer_question=interviewer_question, interviewee_answer=interviewee_answer, scorer_A=scorer_A, scorer_B=scorer_B, scorer_C=scorer_C)
+            return await chain.arun(interviewer_question=interviewer_question, interviewee_response=interviewee_answer, scorer_A=scorer_A, scorer_B=scorer_B, scorer_C=scorer_C)
 
         async def generate_concurrently_judge(chains, chain_results, interviewer_question, interviewee_answer):
-            tasks = [
-                async_run_judge(chains.hrjudgebasic1_chain, interviewer_question, interviewee_answer, chain_results['embasic1_chain'], chain_results['psbasic2_chain'], chain_results['stbasic3_chain']),
-                async_run_judge(chains.ccjudgeprotag1_chain, interviewer_question, interviewee_answer, chain_results['lcprotag1_chain'], chain_results['msprotag2_chain'], chain_results['tbprotag3_chain']),
-                async_run_judge(chains.pscjudgestructure1_chain, interviewer_question, interviewee_answer, chain_results['cestructure1_chain'], chain_results['opstructure2_chain'], chain_results['csstructure3_chain']),
-            ]
-            return await asyncio.gather(*tasks)
-
-        # Run the judge chains concurrently
-        star_winner, protagonist_winner, structure_winner = asyncio.run(generate_concurrently_judge(state.judge_chains, chain_results, test_interviewer_question, test_interviewee_answer))
+            tasks = {
+                'hrjudgebasic1_chain': async_run_judge(chains.hrjudgebasic1_chain, interviewer_question, interviewee_answer, chain_results['embasic1_chain'], chain_results['psbasic2_chain'], chain_results['stbasic3_chain']),
+                'ccjudgeprotag1_chain': async_run_judge(chains.ccjudgeprotag1_chain, interviewer_question, interviewee_answer, chain_results['lcprotag1_chain'], chain_results['msprotag2_chain'], chain_results['tbprotag3_chain']),
+                'pscjudgestructure1_chain': async_run_judge(chains.pscjudgestructure1_chain, interviewer_question, interviewee_answer, chain_results['cestructure1_chain'], chain_results['opstructure2_chain'], chain_results['csstructure3_chain']),
+            }
+            return {chain_name: await task for chain_name, task in tasks.items()}
 
 
-    with st.expander("winning scores"):
-        st.write(star_winner)
-        st.write(protagonist_winner)
-        st.write(structure_winner)
+        judge_results = asyncio.run(generate_concurrently_judge(state.judge_chains, chain_results, test_interviewer_question, test_interviewee_answer))
+
+        for chain_name, result in judge_results.items():
+            # Parse the result as JSON
+            print(f"Result from {chain_name}:")
+            print(result)
+
+            try:
+                parsed_result = json.loads(result)
+            except json.JSONDecodeError:
+                print("Attempting to parse as key-value pairs...")
+                parsed_result = {k: v.strip() for k, v in re.findall(r'(.*?):\s*(.*)', result)}
+            
+            if chain_name == 'hrjudgebasic1_chain':
+                with st.expander("STAR(T) Final Score"):
+                    # Extract the keys
+                    chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
+                    chosen_score = parsed_result.get('chosen_score')
+                    short_sentence_reason = parsed_result.get('short_sentence_reason')
+                    short_piece_of_advice = parsed_result.get('short_piece_of_advice')
+                    positive_feedback = parsed_result.get('positive_feedback')
+
+                    # Display the results
+                    st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
+                    st.write(f"**Chosen Score**: {chosen_score}")
+                    st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
+                    st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
+                    st.write(f"**Positive Feedback**: {positive_feedback}")
+            elif chain_name == 'ccjudgeprotag1_chain':
+                with st.expander("Protagonist Final Score"):
+                    # Extract the keys
+                    chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
+                    chosen_score = parsed_result.get('chosen_score')
+                    short_sentence_reason = parsed_result.get('short_sentence_reason')
+                    short_piece_of_advice = parsed_result.get('short_piece_of_advice')
+                    positive_feedback = parsed_result.get('positive_feedback')
+
+                    # Display the results
+                    st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
+                    st.write(f"**Chosen Score**: {chosen_score}")
+                    st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
+                    st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
+                    st.write(f"**Positive Feedback**: {positive_feedback}")
+            elif chain_name == 'pscjudgestructure1_chain':
+                with st.expander("Structure Final Score"):
+                    # Extract the keys
+                    chosen_ai_scorer = parsed_result.get('chosen_ai_scorer')
+                    chosen_score = parsed_result.get('chosen_score')
+                    short_sentence_reason = parsed_result.get('short_sentence_reason')
+                    short_piece_of_advice = parsed_result.get('short_piece_of_advice')
+                    positive_feedback = parsed_result.get('positive_feedback')
+
+                    # Display the results
+                    st.write(f"**Chosen AI Scorer**: {chosen_ai_scorer}")
+                    st.write(f"**Chosen Score**: {chosen_score}")
+                    st.write(f"**Short Sentence Reason**: {short_sentence_reason}")
+                    st.write(f"**Short Piece of Advice**: {short_piece_of_advice}")
+                    st.write(f"**Positive Feedback**: {positive_feedback}")
+
 
     # Extract scores and feedback
     basic_score = select_score(chain_responses, 'basic_score')[0]['basic_score']
