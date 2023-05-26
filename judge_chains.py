@@ -40,11 +40,11 @@ class JudgeChains:
 
         Here are the three scores from the three AI Scorers-
 
-        Interview Scorer A: {scorer_A_basic1}
+        Interview Scorer A: {scorer_A}
 
-        Interview Scorer B: {scorer_B_basic2}
+        Interview Scorer B: {scorer_B}
 
-        Interview Scorer C: {scorer_C_basic3}
+        Interview Scorer C: {scorer_C}
 
         REQUIRED: Return the following as a JSON object:
         "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
@@ -66,11 +66,11 @@ class JudgeChains:
 
         Here are the three scores from the three AI Scorers-
 
-        Interview Scorer A: {scorer_A_protag1}
+        Interview Scorer A: {scorer_A}
 
-        Interview Scorer B: {scorer_B_protag2}
+        Interview Scorer B: {scorer_B}
 
-        Interview Scorer C: {scorer_C_protag3}
+        Interview Scorer C: {scorer_C}
 
         REQUIRED: Return the following as a JSON object:
         "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
@@ -93,11 +93,11 @@ class JudgeChains:
 
         Here are the three scores from the three AI Scorers-
 
-        Interview Scorer A: {scorer_A_structure1}
+        Interview Scorer A: {scorer_A}
 
-        Interview Scorer B: {scorer_B_structure2}
+        Interview Scorer B: {scorer_B}
 
-        Interview Scorer C: {scorer_C_structure3}
+        Interview Scorer C: {scorer_C}
 
         REQUIRED: Return the following as a JSON object:
         "chosen_ai_scorer", "chosen_score", "short_sentence_reason", "short_piece_of_advice", "positive_feedback"
