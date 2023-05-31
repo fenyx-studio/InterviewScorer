@@ -146,6 +146,7 @@ def get_emoji(score):
 if st.button("Submit Answer"):
     with st.spinner('Scoring Interview Answers...'):
         chain_results = {}
+        messages = {}  # New dictionary to hold messages
         async def async_run(chain, interviewer_question, interviewee_answer, chain_id):
             result = await chain.arun(interviewer_question=interviewer_question, interviewee_response=interviewee_answer)
             return chain_id, result
@@ -179,14 +180,17 @@ if st.button("Submit Answer"):
                 # Get the emoji for the score
                 emoji = get_emoji(score)
 
-                # Display the success message with the emoji
-                score_expander = st.expander(f"{chain_role}'s Score")
-                with score_expander:
-                    st.sidebar.success(f"**{chain_role}'s Score is in!** \n\n**Perspective:** {perspective} \n\n**Score:** {score}/10", icon=emoji)
+                messages[chain_role] = f"**{chain_role}'s Score is in!** \n\n**Perspective:** {perspective} \n\n**Score:** {score}/10"
 
         # Assuming chains is a dictionary where the keys are chain_ids and the values are the chains themselves
         asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
 
+    # Sort the messages by chain_role and display them
+    for chain_role in sorted(messages):
+        # Display the success message with the emoji
+        score_expander = st.expander(f"{chain_role}'s Score")
+        with score_expander:
+            st.sidebar.success(messages[chain_role], icon=get_emoji(chain_results[chain_role]['score']))
 
     # Extract scores and feedback
     chain_scores = {}
@@ -209,6 +213,8 @@ if st.button("Submit Answer"):
         
     # Display the score card
     st.header("Score Card")
+
+
 
     for chain_id in chain_results.keys():
         score = chain_scores.get(chain_id, 0) # default to 0 if no score

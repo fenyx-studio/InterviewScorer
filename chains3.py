@@ -54,6 +54,7 @@ class InterviewChains:
             'persona3_rubric4': "Persona 3 - Rubric 4"
         }
 
+
     def set_component(self, component_name, new_text):
         if component_name in self.components:
             self.components[component_name] = new_text
@@ -77,4 +78,32 @@ class InterviewChains:
             chains[key] = ChainCreator(llm, persona_component, rubric_component).create() # use key instead of value
 
         return chains
+    
+    def get_synthesis_chain(self, llm):
+        template = """
+
+        Interviewer Question: {interviewer_question}
+
+        Interviewee Answer: {interviewee_response}
+
+        Persona 1 Opionions: {persona1_opinions}
+        Persona 2 Opionions: {persona2_opinions}
+        Persona 3 Opionions: {persona3_opinions}
+
+        Persona 1 Tactical Advices: {persona1_tactical_advices}
+        Persona 2 Tactical Advices: {persona2_tactical_advices}
+        Persona 3 Tactical Advices: {persona3_tactical_advices}
+
+        Above, you have ther interviewer question, and the interviewee answer. After it, you have the opinions of the three personas, and the tactical advices of the three personas. You're only job is to : 1) summarize as a one-liner the Persona 1 Opinions, Persona 2 Opinions, and Persona 3 Opinions; and, 2) Take all the tactical advice and synthesize it into a unique list of tactical advice for the interviewee. You can use the following template to synthesize a response:
+
+        REQUIRED: Return the following as a valid JSON object with structure following this format:
+        "persona1_summarized_opinion":"summarized opinion from persona 1", "persona2_summarized_opinion":"summarized opinion from persona 2", "persona3_summarized_opinion":"summarized opinion from persona 3", "synthesized_tactical_advice_list":["synthesized unique tactical advice from all personas as a list"]
+        The above four keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL. The four keys in the JSON should be "persona1_summarized_opinion", "persona2_summarized_opinion", "persona3_summarized_opinion", and "synthesized_tactical_advice_list". The "synthesized_tactical_advice_list" should be a list of unique tactical advice from all personas. The "persona1_summarized_opinion", "persona2_summarized_opinion", and "persona3_summarized_opinion" should be a one-liner summary of the opinions of the three personas.
+
+        The JSON object:
+        """
+
+        prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response", "persona1_opinions", "persona2_opinions", "persona3_opinions", "persona1_tactical_advices", "persona2_tactical_advices", "persona3_tactical_advices"], template=template)
+
+        return LLMChain(llm=self.llm, prompt=prompt)
 
