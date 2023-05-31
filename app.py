@@ -192,11 +192,13 @@ if st.button("Submit Answer"):
     chain_scores = {}
     chain_tactical_advice = {}
     chain_perspective = {}
+    persona_notes = {}
     for chain_id, result in chain_results.items():
         if 'score' in result:
             chain_scores[chain_id] = result['score']
             chain_tactical_advice[chain_id] = result['two_pieces_tactical_advice']
             chain_perspective[chain_id] = result['perspective']
+            persona_notes[chain_id] = result['persona_note']
 
     with st.expander(f"JSON Dictionary Results"):
         st.write(chain_results)
@@ -208,10 +210,12 @@ if st.button("Submit Answer"):
         score = chain_scores.get(chain_id, 0) # default to 0 if no score
         tactica_advice = chain_tactical_advice.get(chain_id, 'No tactical advice')
         perspective = chain_perspective.get(chain_id, 'No perspective')
+        persona_note = persona_notes.get(chain_id, 'No persona note')
 
         with st.expander(f"## {chain_id} Score: {get_emoji(score)} {score}/10"):
             st.markdown(f"** {chain_id} Perspective:** {perspective}")
             st.markdown(f"** {chain_id} Tactical Advice:** {tactica_advice}")
+            st.markdown(f"** {chain_id} Persona Note:** {persona_note}")
             
 
 
