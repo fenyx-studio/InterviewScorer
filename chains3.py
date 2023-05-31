@@ -17,7 +17,7 @@ class ChainCreator:
 
         REQUIRED: Return the following as a valid JSON object with structure following this format:
         "score":"score", "perspective":"perspective on interview answer", "two_pieces_tactical_advice":"two distinct pieces of tactical advice", "persona_note":"what the persona would note about the interviewee's answer"
-        The above three keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
+        The above four keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL.
 
         The JSON object:
         """
