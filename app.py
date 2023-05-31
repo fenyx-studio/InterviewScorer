@@ -218,11 +218,11 @@ if st.button("Submit Answer"):
         stricter_score = stricter_scores.get(chain_id, 0) # default to 0 if no score
         confidence = confidence_scores.get(chain_id, 0) # default to 0 if no score
 
-        with st.expander(f"## {chain_id} Score: {get_emoji(score)} {score}/10"):
+        with st.expander(f"## {chain_id} Score: {get_emoji(score)} {score}/100"):
             st.markdown(f"** {chain_id} Perspective:** {perspective}")
             st.markdown(f"** {chain_id} Tactical Advice:** {tactica_advice}")
             st.markdown(f"** {chain_id} Persona Note:** {persona_note}")
-            st.markdown(f"** {chain_id} Stricter Score:** {stricter_score}/10")
+            st.markdown(f"** {chain_id} Stricter Score:** {stricter_score}/100")
             st.markdown(f"** {chain_id} Confidence:** {confidence}/5")
             
 
