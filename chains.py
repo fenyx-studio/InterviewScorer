@@ -5,6 +5,15 @@ from langchain.chains import LLMChain
 class InterviewChains:
     def __init__(self):
         self.components = {
+            'persona1_component':"Persona 1",
+            'persona2_component':"Persona 2",
+            'persona3_component':"Persona 3",
+            'rubric1_component':"Rubric 1",
+            'rubric2_component':"Rubric 2",
+            'rubric3_component':"Rubric 3",
+            'rubric4_component':"Rubric 4"
+        }
+        self.components = {
             'starscorer1_persona_component': "As an Experienced Manager, you have a keen eye for identifying the core elements of a situation and how individuals handle tasks and achieve results. Now, stepping into the role of an Interview Scorer, you are specifically focusing on the Basic Score category. Your years of experience in managing teams and projects give you a unique perspective on evaluating the basic elements of an interview response.",
             'starscorer2_persona_component': "As a Problem Solver, you have a knack for identifying issues and finding effective solutions. Now, stepping into the role of an Interview Scorer, you are specifically focusing on the Basic Score category. Your ability to analyze situations, tasks, actions, and results helps you evaluate how well an interviewee can handle challenges.",
             'starscorer3_persona_component': "As a Strategic Thinker, you understand the importance of clear goals and effective execution. Now, stepping into the role of an Interview Scorer, you are specifically focusing on the Basic Score category. Your ability to assess the clarity and relevance of a situation, the difficulty of a task, and the strategy and outcome of actions helps you evaluate an interviewee's strategic thinking skills.",
@@ -29,6 +38,21 @@ class InterviewChains:
             'cestructure1_chain': "Structure Scorer #1",
             'opstructure2_chain': "Structure Scorer #2",
             'csstructure3_chain': "Structure Scorer #3"
+        }
+
+        self.chain_ids = {
+            'persona1_rubric1': "Persona 1 - Rubric 1",
+            'persona1_rubric2': "Persona 1 - Rubric 2",
+            'persona1_rubric3': "Persona 1 - Rubric 3",
+            'persona1_rubric4': "Persona 1 - Rubric 4",
+            'persona2_rubric1': "Persona 2 - Rubric 1",
+            'persona2_rubric2': "Persona 2 - Rubric 2",
+            'persona2_rubric3': "Persona 2 - Rubric 3",
+            'persona2_rubric4': "Persona 2 - Rubric 4",
+            'persona3_rubric1': "Persona 3 - Rubric 1",
+            'persona3_rubric2': "Persona 3 - Rubric 2",
+            'persona3_rubric3': "Persona 3 - Rubric 3",
+            'persona3_rubric4': "Persona 3 - Rubric 4"
         }
 
 
