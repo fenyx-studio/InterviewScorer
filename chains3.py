@@ -16,7 +16,7 @@ class ChainCreator:
         Interviewee Answer: {interviewee_response}
 
         REQUIRED: Return the following as a valid JSON object with structure following this format:
-        "score":"score (1-100)", "perspective":"perspective on interview answer", "two_pieces_tactical_advice":"two distinct pieces of tactical advice for a better answer", "persona_note":"what the persona would note about the interviewee's answer", "stricter_score":"score (1-100)", "confidence":"confidence in score and evaluation of answer (1-5)"
+        "score":"score (1-100)", "perspective":"perspective on interview answer", "two_pieces_tactical_advice":"two distinct pieces of tactical advice for a better answer", "persona_note":"what the persona thinks about the interviewee based on their answer. this should be a personal opinion.", "stricter_score":"score (1-100)", "confidence":"confidence in score and evaluation of answer (1-5)"
         The above six keys MUST be returned as a JSON object. THIS IS VERY IMPORTANT and CRITICAL. The six keys in the JSON should be "score", "perspective", "two_pieces_tactical_advice", "persona_note", "stricter_score" and "confidence". The "stricture_score" should be a much more accurate score and much more strict than the "score". Both "score" & "stricter_score" should be a value from 1-100. The "confidence" should be a confidence score from 1-5 in the evaluation of the answer and score.
 
         The JSON object:
