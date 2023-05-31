@@ -13,10 +13,9 @@ from judge_chains import JudgeChains
 import re
 import asyncio
 
-os.environ['OPENAI_API_KEY'] = "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"
-# Initialize OpenAI API
-openai.api_key = os.environ['OPENAI_API_KEY']
-os.environ['OPENAI_API_KEY'] = os.environ['OPENAI_API_KEY']
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
+os.environ['HUGGINGFACEHUB_API_TOKEN'] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 
 
 llm = OpenAI(model_name='gpt-3.5-turbo',
