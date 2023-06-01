@@ -227,11 +227,32 @@ async def synthesis_run(chain, chain_results):
                 """.format(persona_images['persona3'], persona3_opinion), unsafe_allow_html=True)
 
 
-            # Display advice
+            st.markdown("""
+            <style>
+                ul.alternatingList {
+                    list-style-type: disc;
+                    padding: 10px;
+                }
+                ul.alternatingList li:nth-child(even) {
+                    background-color: #f2f2f2;
+                    padding: 5px;
+                    border-radius: 5px;
+                }
+                ul.alternatingList li:nth-child(odd) {
+                    background-color: #e7e7e7;
+                    padding: 5px;
+                    border-radius: 5px;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+
             st.header("Synthesized Tactical Advice:")
+            advice_html = "<ul class='alternatingList'>"
             for advice in advice_list:
-                st.write("- " + advice)
-            return parsed_result
+                advice_html += "<li>" + advice + "</li>"
+            advice_html += "</ul>"
+
+            st.markdown(advice_html, unsafe_allow_html=True)
 
 
 # Score Card
