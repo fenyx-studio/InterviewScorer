@@ -192,22 +192,29 @@ async def synthesis_run(chain, chain_results):
             col1, col2, col3 = st.columns(3)
 
             with col1:
-                st.markdown("<div class='customDiv'>", unsafe_allow_html=True)
-                st.image(persona_images['persona1'])
-                st.write(persona1_opinion)
-                st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown("""
+                <div class='customDiv'>
+                    <img src='{}' alt='Persona1 Image'>
+                    <p>{}</p>
+                </div>
+                """.format(persona_images['persona1'], persona1_opinion), unsafe_allow_html=True)
 
             with col2:
-                st.markdown("<div class='customDiv'>", unsafe_allow_html=True)
-                st.image(persona_images['persona2'])
-                st.write(persona2_opinion)
-                st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown("""
+                <div class='customDiv'>
+                    <img src='{}' alt='Persona2 Image'>
+                    <p>{}</p>
+                </div>
+                """.format(persona_images['persona2'], persona2_opinion), unsafe_allow_html=True)
 
             with col3:
-                st.markdown("<div class='customDiv'>", unsafe_allow_html=True)
-                st.image(persona_images['persona3'])
-                st.write(persona3_opinion)
-                st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown("""
+                <div class='customDiv'>
+                    <img src='{}' alt='Persona3 Image'>
+                    <p>{}</p>
+                </div>
+                """.format(persona_images['persona3'], persona3_opinion), unsafe_allow_html=True)
+
 
             # Display advice
             st.header("Synthesized Tactical Advice:")
