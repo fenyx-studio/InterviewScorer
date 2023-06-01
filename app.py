@@ -182,7 +182,7 @@ async def synthesis_run(chain, chain_results):
                     border-radius: 20px;
                     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
                 }
-                .customDiv {
+                .cardDiv {
                     background-color: #ff00ff;
                     color: white;
                     padding: 10px;
@@ -191,14 +191,14 @@ async def synthesis_run(chain, chain_results):
                     transition: transform .2s; /* Animation */
                     margin: 5px 0;
                 }
-                .customDiv img {
+                .cardDiv img {
                     width: 100%;
                     height: auto;
                     border-radius: 10px;
                     transition: transform .2s; /* Animation */
                     margin: 5px 0;
                 }
-                .customDiv img:hover {
+                .cardDiv img:hover {
                     transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
                 }
                 ul.alternatingList {
@@ -225,24 +225,28 @@ async def synthesis_run(chain, chain_results):
             st.markdown("""
                 <div class='mainDiv'>
                     <h1>Score Card</h1>
-                    <div class='customDiv' style='display: flex; justify-content: space-between;'>
-                        <div>
+                    <div style='display: flex; justify-content: space-between;'>
+                        <div class='cardDiv'>
                             <img src='{}' alt='Persona1 Image'>
                             <p>{}</p>
                         </div>
-                        <div>
+                        <div class='cardDiv'>
                             <img src='{}' alt='Persona2 Image'>
                             <p>{}</p>
                         </div>
-                        <div>
+                        <div class='cardDiv'>
                             <img src='{}' alt='Persona3 Image'>
                             <p>{}</p>
                         </div>
                     </div>
+                </div>
+            """.format(persona_images['persona1'], persona1_opinion, persona_images['persona2'], persona2_opinion, persona_images['persona3'], persona3_opinion), unsafe_allow_html=True)
 
+            st.markdown("""
+                <div class='mainDiv'>
                     <h2>Synthesized Tactical Advice:</h2>
                     <ul class='alternatingList'>
-            """.format(persona_images['persona1'], persona1_opinion, persona_images['persona2'], persona2_opinion, persona_images['persona3'], persona3_opinion), unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
 
             for advice in advice_list:
                 st.markdown("<li>{}</li>".format(advice), unsafe_allow_html=True)
@@ -251,6 +255,7 @@ async def synthesis_run(chain, chain_results):
                     </ul>
                 </div>
                 """, unsafe_allow_html=True)
+
 
 
 # Score Card
