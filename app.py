@@ -222,12 +222,12 @@ if st.button("Submit Answer"):
             st.sidebar.success(messages[chain_role], icon=get_emoji(chain_results[chain_role]['score']))
 
     # Extract the opinions
-    persona1_opinion = synthesis_result["persona1_summarized_opinion"]
-    persona2_opinion = synthesis_result["persona2_summarized_opinion"]
-    persona3_opinion = synthesis_result["persona3_summarized_opinion"]
+    persona1_opinion = synthesis_result.get("persona1_summarized_opinion", "No opinion provided")
+    persona2_opinion = synthesis_result.get("persona2_summarized_opinion", "No opinion provided")
+    persona3_opinion = synthesis_result.get("persona3_summarized_opinion", "No opinion provided")
 
     # Extract the advice list
-    advice_list = synthesis_result["synthesized_tactical_advice_list"]
+    advice_list = synthesis_result.get("synthesized_tactical_advice_list", "No tactical advices provided")
 
     # Display the score card
     st.header("Score Card")
