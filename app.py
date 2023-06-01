@@ -167,10 +167,7 @@ async def synthesis_run(chain, chain_results):
             # Extract the advice list
             advice_list = parsed_result.get("synthesized_tactical_advice_list", "No tactical advices provided")
 
-            # Display the score card
-            st.header("Score Card")
-
-        # Add personas images (replace with your actual paths)
+            # Add personas images (replace with your actual paths)
             persona_images = {
                 "persona1": "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/edfdbf71-cedb-42d4-a5bd-c38035aa47eb/Screen+Shot+2023-05-18+at+11.45.15+AM.png?format=500w",
                 "persona2": "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/399913bf-4f20-478e-8635-5e96fdf77882/Screen+Shot+2023-05-18+at+12.05.45+PM.png?format=500w",
@@ -179,12 +176,20 @@ async def synthesis_run(chain, chain_results):
 
             st.markdown("""
             <style>
+                .mainDiv {
+                    background-color: #E8E8E8;
+                    padding: 20px;
+                    border-radius: 20px;
+                    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+                }
                 .customDiv {
                     background-color: #ff00ff;
                     color: white;
                     padding: 10px;
                     border-radius: 10px;
                     text-align: center;
+                    transition: transform .2s; /* Animation */
+                    margin: 5px 0;
                 }
                 .customDiv img {
                     width: 100%;
@@ -196,63 +201,56 @@ async def synthesis_run(chain, chain_results):
                 .customDiv img:hover {
                     transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
                 }
-            </style>
-        """, unsafe_allow_html=True)
-
-            # This is how you apply it
-            col1, col2, col3 = st.columns(3)
-
-            with col1:
-                st.markdown("""
-                <div class='customDiv'>
-                    <img src='{}' alt='Persona1 Image'>
-                    <p>{}</p>
-                </div>
-                """.format(persona_images['persona1'], persona1_opinion), unsafe_allow_html=True)
-
-            with col2:
-                st.markdown("""
-                <div class='customDiv'>
-                    <img src='{}' alt='Persona2 Image'>
-                    <p>{}</p>
-                </div>
-                """.format(persona_images['persona2'], persona2_opinion), unsafe_allow_html=True)
-
-            with col3:
-                st.markdown("""
-                <div class='customDiv'>
-                    <img src='{}' alt='Persona3 Image'>
-                    <p>{}</p>
-                </div>
-                """.format(persona_images['persona3'], persona3_opinion), unsafe_allow_html=True)
-
-
-            st.markdown("""
-            <style>
                 ul.alternatingList {
                     list-style-type: disc;
                     padding: 10px;
                 }
                 ul.alternatingList li:nth-child(even) {
-                    background-color: #f2f2f2;
+                    background-color: #FFB6C1;
                     padding: 5px;
                     border-radius: 5px;
                 }
                 ul.alternatingList li:nth-child(odd) {
-                    background-color: #e7e7e7;
+                    background-color: #FF69B4;
                     padding: 5px;
                     border-radius: 5px;
+                }
+                ul.alternatingList li:hover {
+                    transform: scale(1.02);
+                    transition: transform .2s;
                 }
             </style>
             """, unsafe_allow_html=True)
 
-            st.header("Synthesized Tactical Advice:")
-            advice_html = "<ul class='alternatingList'>"
-            for advice in advice_list:
-                advice_html += "<li>" + advice + "</li>"
-            advice_html += "</ul>"
+            st.markdown("""
+                <div class='mainDiv'>
+                    <h1>Score Card</h1>
+                    <div class='customDiv' style='display: flex; justify-content: space-between;'>
+                        <div>
+                            <img src='{}' alt='Persona1 Image'>
+                            <p>{}</p>
+                        </div>
+                        <div>
+                            <img src='{}' alt='Persona2 Image'>
+                            <p>{}</p>
+                        </div>
+                        <div>
+                            <img src='{}' alt='Persona3 Image'>
+                            <p>{}</p>
+                        </div>
+                    </div>
 
-            st.markdown(advice_html, unsafe_allow_html=True)
+                    <h2>Synthesized Tactical Advice:</h2>
+                    <ul class='alternatingList'>
+            """.format(persona_images['persona1'], persona1_opinion, persona_images['persona2'], persona2_opinion, persona_images['persona3'], persona3_opinion), unsafe_allow_html=True)
+
+            for advice in advice_list:
+                st.markdown("<li>{}</li>".format(advice), unsafe_allow_html=True)
+
+            st.markdown("""
+                    </ul>
+                </div>
+                """, unsafe_allow_html=True)
 
 
 # Score Card
