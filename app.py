@@ -222,12 +222,12 @@ if st.button("Submit Answer"):
             st.sidebar.success(messages[chain_role], icon=get_emoji(chain_results[chain_role]['score']))
 
     # Extract the opinions
-    persona1_opinion = synthesis_result.get("persona1_summarized_opinion", "No opinion provided")
-    persona2_opinion = synthesis_result.get("persona2_summarized_opinion", "No opinion provided")
-    persona3_opinion = synthesis_result.get("persona3_summarized_opinion", "No opinion provided")
+    persona1_opinion = synthesis_result[0].get("persona1_summarized_opinion", "No opinion provided")
+    persona2_opinion = synthesis_result[0].get("persona2_summarized_opinion", "No opinion provided")
+    persona3_opinion = synthesis_result[0].get("persona3_summarized_opinion", "No opinion provided")
 
     # Extract the advice list
-    advice_list = synthesis_result.get("synthesized_tactical_advice_list", "No tactical advices provided")
+    advice_list = synthesis_result[0].get("synthesized_tactical_advice_list", "No tactical advices provided")
 
     # Display the score card
     st.header("Score Card")
@@ -246,7 +246,7 @@ if st.button("Submit Answer"):
         "persona3": "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/ad23726e-3dd7-4ed5-9427-6f6444ce8210/Screen+Shot+2023-05-18+at+11.53.33+AM.png?format=500w",
     }
 
-    col1, col2, col3 = st.beta_columns(3)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.image(persona_images['persona1'])
