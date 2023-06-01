@@ -177,19 +177,37 @@ async def synthesis_run(chain, chain_results):
                 "persona3": "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/ad23726e-3dd7-4ed5-9427-6f6444ce8210/Screen+Shot+2023-05-18+at+11.53.33+AM.png?format=500w",
             }
 
+            st.markdown("""
+            <style>
+            .customDiv {
+                background-color: #ff00ff;
+                color: white;
+                padding: 10px;
+                border-radius: 10px;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
+            # This is how you apply it
             col1, col2, col3 = st.columns(3)
 
             with col1:
+                st.markdown("<div class='customDiv'>", unsafe_allow_html=True)
                 st.image(persona_images['persona1'])
                 st.write(persona1_opinion)
+                st.markdown("</div>", unsafe_allow_html=True)
 
             with col2:
+                st.markdown("<div class='customDiv'>", unsafe_allow_html=True)
                 st.image(persona_images['persona2'])
                 st.write(persona2_opinion)
+                st.markdown("</div>", unsafe_allow_html=True)
 
             with col3:
+                st.markdown("<div class='customDiv'>", unsafe_allow_html=True)
                 st.image(persona_images['persona3'])
                 st.write(persona3_opinion)
+                st.markdown("</div>", unsafe_allow_html=True)
 
             # Display advice
             st.header("Synthesized Tactical Advice:")
@@ -258,43 +276,42 @@ if st.button("Submit Answer"):
             st.sidebar.success(messages[chain_role], icon=get_emoji(chain_results[chain_role]['score']))
 
     
-    if st.button("Internal Review"):
-        # Extract scores and feedback
-        chain_scores = {}
-        chain_tactical_advice = {}
-        chain_perspective = {}
-        persona_notes = {}
-        stricter_scores = {}
-        confidence_scores = {}
-        for chain_id, result in chain_results.items():
-            if 'score' in result:
-                chain_scores[chain_id] = result['score']
-                chain_tactical_advice[chain_id] = result['two_pieces_tactical_advice']
-                chain_perspective[chain_id] = result['perspective']
-                persona_notes[chain_id] = result['persona_note']
-                stricter_scores[chain_id] = result['stricter_score']
-                confidence_scores[chain_id] = result['confidence']
+    # Extract scores and feedback
+    chain_scores = {}
+    chain_tactical_advice = {}
+    chain_perspective = {}
+    persona_notes = {}
+    stricter_scores = {}
+    confidence_scores = {}
+    for chain_id, result in chain_results.items():
+        if 'score' in result:
+            chain_scores[chain_id] = result['score']
+            chain_tactical_advice[chain_id] = result['two_pieces_tactical_advice']
+            chain_perspective[chain_id] = result['perspective']
+            persona_notes[chain_id] = result['persona_note']
+            stricter_scores[chain_id] = result['stricter_score']
+            confidence_scores[chain_id] = result['confidence']
 
-        with st.expander(f"JSON Dictionary Results"):
-            st.write(chain_results)
-            
-        # Display the score card
-        st.header("Score Card")
+    with st.expander(f"JSON Dictionary Results"):
+        st.write(chain_results)
+        
+    # Display the score card
+    st.header("Score Card")
 
-        for chain_id in chain_results.keys():
-            score = chain_scores.get(chain_id, 0) # default to 0 if no score
-            tactica_advice = chain_tactical_advice.get(chain_id, 'No tactical advice')
-            perspective = chain_perspective.get(chain_id, 'No perspective')
-            persona_note = persona_notes.get(chain_id, 'No persona note')
-            stricter_score = stricter_scores.get(chain_id, 0) # default to 0 if no score
-            confidence = confidence_scores.get(chain_id, 0) # default to 0 if no score
+    for chain_id in chain_results.keys():
+        score = chain_scores.get(chain_id, 0) # default to 0 if no score
+        tactica_advice = chain_tactical_advice.get(chain_id, 'No tactical advice')
+        perspective = chain_perspective.get(chain_id, 'No perspective')
+        persona_note = persona_notes.get(chain_id, 'No persona note')
+        stricter_score = stricter_scores.get(chain_id, 0) # default to 0 if no score
+        confidence = confidence_scores.get(chain_id, 0) # default to 0 if no score
 
-            with st.expander(f"## {chain_id} Score: {get_emoji(score)} {score}/10"):
-                st.markdown(f"** {chain_id} Perspective:** {perspective}")
-                st.markdown(f"** {chain_id} Tactical Advice:** {tactica_advice}")
-                st.markdown(f"** {chain_id} Persona Note:** {persona_note}")
-                st.markdown(f"** {chain_id} Stricter Score:** {stricter_score}/10")
-                st.markdown(f"** {chain_id} Confidence:** {confidence}/5")
+        with st.expander(f"## {chain_id} Score: {get_emoji(score)} {score}/10"):
+            st.markdown(f"** {chain_id} Perspective:** {perspective}")
+            st.markdown(f"** {chain_id} Tactical Advice:** {tactica_advice}")
+            st.markdown(f"** {chain_id} Persona Note:** {persona_note}")
+            st.markdown(f"** {chain_id} Stricter Score:** {stricter_score}/10")
+            st.markdown(f"** {chain_id} Confidence:** {confidence}/5")
             
 
 
