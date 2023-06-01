@@ -105,5 +105,5 @@ class InterviewChains:
 
         prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response", "persona1_opinions", "persona2_opinions", "persona3_opinions", "persona1_tactical_advices", "persona2_tactical_advices", "persona3_tactical_advices"], template=template)
 
-        return LLMChain(llm=self.llm, prompt=prompt)
+        return LLMChain(llm=llm, prompt=prompt)
 
