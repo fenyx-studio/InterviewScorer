@@ -182,8 +182,36 @@ if st.button("Submit Answer"):
 
                 messages[chain_role] = f"**{chain_role}'s Score is in!** \n\n**Perspective:** {perspective} \n\n**Score:** {score}/10"
 
+            # Now all chains have finished, run the synthesis chain
+            synthesis_chain = state.interview_chains.get_synthesis_chain(llm)  # Ensure you have defined get_synthesis_chain method
+            synthesis_result = await synthesis_run(synthesis_chain, chain_results)
+            # Here you can do something with the synthesis_result
+            with st.expander(f"JSON Synthesis Results"):
+                st.write(synthesis_result)
+
         # Assuming chains is a dictionary where the keys are chain_ids and the values are the chains themselves
         asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
+
+        async def synthesis_run(chain, chain_results):
+            # Extract perspectives and advices
+            perspectives = {chain_id: result['perspective'] for chain_id, result in chain_results.items()}
+            advices = {chain_id: result['two_pieces_tactical_advice'] for chain_id, result in chain_results.items()}
+
+            result = await chain.arun(
+                interviewer_question=test_interviewer_question,
+                interviewee_response=test_interviewee_answer,
+                persona1_opinions=perspectives['persona1_rubric1'],
+                persona2_opinions=perspectives['persona2_rubric1'],
+                persona3_opinions=perspectives['persona3_rubric1'],
+                persona1_tactical_advices=advices['persona1_rubric1'],
+                persona2_tactical_advices=advices['persona2_rubric1'],
+                persona3_tactical_advices=advices['persona3_rubric1']
+            )
+
+            # Parse the result as JSON and return
+            parsed_result = json.loads(result)
+            return parsed_result
+
 
     # Sort the messages by chain_role and display them
     for chain_role in sorted(messages):
