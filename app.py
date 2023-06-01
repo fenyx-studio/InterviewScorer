@@ -38,7 +38,7 @@ state = st.session_state
 
 # Initialize the state if it doesn't exist
 if 'interview_chains' not in state:
-    state.interview_chains = InterviewChains(llm)
+    state.interview_chains = InterviewChains()
 
 chains = state.interview_chains.get_chains(llm)
 
