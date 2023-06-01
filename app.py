@@ -179,14 +179,25 @@ async def synthesis_run(chain, chain_results):
 
             st.markdown("""
             <style>
-            .customDiv {
-                background-color: #ff00ff;
-                color: white;
-                padding: 10px;
-                border-radius: 10px;
-            }
+                .customDiv {
+                    background-color: #ff00ff;
+                    color: white;
+                    padding: 10px;
+                    border-radius: 10px;
+                    text-align: center;
+                }
+                .customDiv img {
+                    width: 100%;
+                    height: auto;
+                    border-radius: 10px;
+                    transition: transform .2s; /* Animation */
+                    margin: 5px 0;
+                }
+                .customDiv img:hover {
+                    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+                }
             </style>
-            """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
             # This is how you apply it
             col1, col2, col3 = st.columns(3)
