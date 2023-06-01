@@ -174,87 +174,31 @@ async def synthesis_run(chain, chain_results):
                 "persona3": "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/ad23726e-3dd7-4ed5-9427-6f6444ce8210/Screen+Shot+2023-05-18+at+11.53.33+AM.png?format=500w",
             }
 
-            st.markdown("""
-            <style>
-                .mainDiv {
-                    background-color: #E8E8E8;
-                    padding: 20px;
-                    border-radius: 20px;
-                    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-                }
-                .cardDiv {
-                    background-color: #ff00ff;
-                    color: white;
-                    padding: 10px;
-                    border-radius: 10px;
-                    text-align: center;
-                    transition: transform .2s; /* Animation */
-                    margin: 5px 0;
-                }
-                .cardDiv img {
-                    width: 100%;
-                    height: auto;
-                    border-radius: 10px;
-                    transition: transform .2s; /* Animation */
-                    margin: 5px 0;
-                }
-                .cardDiv img:hover {
-                    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-                }
-                ul.alternatingList {
-                    list-style-type: disc;
-                    padding: 10px;
-                }
-                ul.alternatingList li:nth-child(even) {
-                    background-color: #FFB6C1;
-                    padding: 5px;
-                    border-radius: 5px;
-                }
-                ul.alternatingList li:nth-child(odd) {
-                    background-color: #FF69B4;
-                    padding: 5px;
-                    border-radius: 5px;
-                }
-                ul.alternatingList li:hover {
-                    transform: scale(1.02);
-                    transition: transform .2s;
-                }
-            </style>
-            """, unsafe_allow_html=True)
+            st.header("Score Card")
 
-            st.markdown("""
-                <div class='mainDiv'>
-                    <h1>Score Card</h1>
-                    <div style='display: flex; justify-content: space-between;'>
-                        <div class='cardDiv'>
-                            <img src='{}' alt='Persona1 Image'>
-                            <p>{}</p>
-                        </div>
-                        <div class='cardDiv'>
-                            <img src='{}' alt='Persona2 Image'>
-                            <p>{}</p>
-                        </div>
-                        <div class='cardDiv'>
-                            <img src='{}' alt='Persona3 Image'>
-                            <p>{}</p>
-                        </div>
-                    </div>
-                </div>
-            """.format(persona_images['persona1'], persona1_opinion, persona_images['persona2'], persona2_opinion, persona_images['persona3'], persona3_opinion), unsafe_allow_html=True)
+            # Create three columns for the persona cards
+            col1, col2, col3 = st.columns(3)
 
-            st.markdown("""
-                <div class='mainDiv'>
-                    <h2>Synthesized Tactical Advice:</h2>
-                    <ul class='alternatingList'>
-                """, unsafe_allow_html=True)
+            # Display persona1 opinion and image
+            with col1:
+                st.image(persona_images['persona1'])
+                st.write(persona1_opinion)
 
+            # Display persona2 opinion and image
+            with col2:
+                st.image(persona_images['persona2'])
+                st.write(persona2_opinion)
+
+            # Display persona3 opinion and image
+            with col3:
+                st.image(persona_images['persona3'])
+                st.write(persona3_opinion)
+
+            st.header("Synthesized Tactical Advice:")
+
+            # Display advice list
             for advice in advice_list:
-                st.markdown("<li>{}</li>".format(advice), unsafe_allow_html=True)
-
-            st.markdown("""
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown("* {}".format(advice))
 
 
 
