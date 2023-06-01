@@ -164,10 +164,11 @@ async def synthesis_run(chain, chain_results):
 
 # Score Card
 if st.button("Submit Answer"):
+    synthesis_result = {}
     with st.spinner('Scoring Interview Answers...'):
         chain_results = {}
         messages = {}  # New dictionary to hold messages
-        synthesis_result = {}
+        
         async def async_run(chain, interviewer_question, interviewee_answer, chain_id):
             result = await chain.arun(interviewer_question=interviewer_question, interviewee_response=interviewee_answer)
             return chain_id, result
@@ -231,22 +232,38 @@ if st.button("Submit Answer"):
     # Display the score card
     st.header("Score Card")
 
-    # Display the 3-column layout for personas' opinions
-    cols = st.columns(3)
-    avatar_path = "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/edfdbf71-cedb-42d4-a5bd-c38035aa47eb/Screen+Shot+2023-05-18+at+11.45.15+AM.png?format=500w"
-    avatar_path2 = "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/399913bf-4f20-478e-8635-5e96fdf77882/Screen+Shot+2023-05-18+at+12.05.45+PM.png?format=500w"
-    avatar_path3 = "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/ad23726e-3dd7-4ed5-9427-6f6444ce8210/Screen+Shot+2023-05-18+at+11.53.33+AM.png?format=500w"
-    cols[0].image(avatar_path, width=100)
-    cols[0].markdown(f"**Persona 1's Opinion:** {persona1_opinion}")
-    cols[1].image(avatar_path2, width=100)
-    cols[1].markdown(f"**Persona 2's Opinion:** {persona2_opinion}")
-    cols[2].image(avatar_path3, width=100)
-    cols[2].markdown(f"**Persona 3's Opinion:** {persona3_opinion}")
+    try:
+        persona1_opinion = synthesis_result["persona1_summarized_opinion"]
+        persona2_opinion = synthesis_result["persona2_summarized_opinion"]
+        persona3_opinion = synthesis_result["persona3_summarized_opinion"]
+        synthesized_advice_list = synthesis_result["synthesized_tactical_advice_list"]
+    except KeyError as e:
+        st.write(f"Error: {e}")
+   # Add personas images (replace with your actual paths)
+    persona_images = {
+        "persona1": "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/edfdbf71-cedb-42d4-a5bd-c38035aa47eb/Screen+Shot+2023-05-18+at+11.45.15+AM.png?format=500w",
+        "persona2": "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/399913bf-4f20-478e-8635-5e96fdf77882/Screen+Shot+2023-05-18+at+12.05.45+PM.png?format=500w",
+        "persona3": "https://images.squarespace-cdn.com/content/v1/642f02f12d929f0bcb191eb4/ad23726e-3dd7-4ed5-9427-6f6444ce8210/Screen+Shot+2023-05-18+at+11.53.33+AM.png?format=500w",
+    }
 
-    # Display the bulleted list of synthesized tactical advice
-    st.header("Synthesized Tactical Advice")
-    for advice in advice_list:
-        st.markdown(f"- {advice}")
+    col1, col2, col3 = st.beta_columns(3)
+
+    with col1:
+        st.image(persona_images['persona1'])
+        st.write(persona1_opinion)
+
+    with col2:
+        st.image(persona_images['persona2'])
+        st.write(persona2_opinion)
+
+    with col3:
+        st.image(persona_images['persona3'])
+        st.write(persona3_opinion)
+
+    # Display advice
+    st.header("Synthesized Tactical Advice:")
+    for advice in synthesized_advice_list:
+        st.write("- " + advice)
 
     # Extract scores and feedback
     chain_scores = {}
