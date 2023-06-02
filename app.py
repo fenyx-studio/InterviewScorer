@@ -295,7 +295,7 @@ if st.button("Submit Answer"):
                 grade = 'C'
 
             # Display the grade
-            grade_images = {'A': 'letter_a.png', 'B': 'letter_b.jiff', 'C': 'letter_c.png'}  # assuming you have images named A.png, B.png and C.png
+            grade_images = {'A': 'letter_a.png', 'B': 'letter_b.png', 'C': 'letter_c.png'}  # assuming you have images named A.png, B.png and C.png
 
             st.image(grade_images[grade], caption=f'Grade: {grade}')
 
