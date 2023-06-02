@@ -76,30 +76,30 @@ st.sidebar.markdown(f"## You selected: **{selected_question}**")
 st.title("TheApply.AI Interview Scoring Tool")
 test_interviewer_question = selected_question
 
-expander = st.expander('Scoring Rubrics and Personas')
+# expander = st.expander('Scoring Rubrics and Personas')
 
-with expander:
-    rubrics_tab, personas_tab = st.tabs(["Scoring Rubrics", "Personas"])
-    with rubrics_tab:
-        rubric1 = rubrics_tab.text_area('Rubric #1', state.interview_chains.get_component('rubric1_component'))
-        rubric2 = rubrics_tab.text_area('Rubric #2', state.interview_chains.get_component('rubric2_component'))
-        rubric3 = rubrics_tab.text_area('Rubric #3', state.interview_chains.get_component('rubric3_component'))
-        rubric4 = rubrics_tab.text_area('Rubric #4', state.interview_chains.get_component('rubric4_component'))
-    with personas_tab:
-        persona1 = personas_tab.text_area('Persona #1', state.interview_chains.get_component('persona1_component'))
-        persona2 = personas_tab.text_area('Persona #2', state.interview_chains.get_component('persona2_component'))
-        persona3 = personas_tab.text_area('Persona #3', state.interview_chains.get_component('persona3_component'))
+# with expander:
+#     rubrics_tab, personas_tab = st.tabs(["Scoring Rubrics", "Personas"])
+#     with rubrics_tab:
+#         rubric1 = rubrics_tab.text_area('Rubric #1', state.interview_chains.get_component('rubric1_component'))
+#         rubric2 = rubrics_tab.text_area('Rubric #2', state.interview_chains.get_component('rubric2_component'))
+#         rubric3 = rubrics_tab.text_area('Rubric #3', state.interview_chains.get_component('rubric3_component'))
+#         rubric4 = rubrics_tab.text_area('Rubric #4', state.interview_chains.get_component('rubric4_component'))
+#     with personas_tab:
+#         persona1 = personas_tab.text_area('Persona #1', state.interview_chains.get_component('persona1_component'))
+#         persona2 = personas_tab.text_area('Persona #2', state.interview_chains.get_component('persona2_component'))
+#         persona3 = personas_tab.text_area('Persona #3', state.interview_chains.get_component('persona3_component'))
     
-    if st.button('Update Model'):
-        state.interview_chains.set_component('rubric1_component', rubric1)
-        state.interview_chains.set_component('rubric2_component', rubric2)
-        state.interview_chains.set_component('rubric3_component', rubric3)
-        state.interview_chains.set_component('rubric4_component', rubric4)
-        state.interview_chains.set_component('persona1_component', persona1)
-        state.interview_chains.set_component('persona2_component', persona2)
-        state.interview_chains.set_component('persona3_component', persona3)
-        chains = state.interview_chains.get_chains(llm)
-        st.write("Model has been updated!")
+#     if st.button('Update Model'):
+#         state.interview_chains.set_component('rubric1_component', rubric1)
+#         state.interview_chains.set_component('rubric2_component', rubric2)
+#         state.interview_chains.set_component('rubric3_component', rubric3)
+#         state.interview_chains.set_component('rubric4_component', rubric4)
+#         state.interview_chains.set_component('persona1_component', persona1)
+#         state.interview_chains.set_component('persona2_component', persona2)
+#         state.interview_chains.set_component('persona3_component', persona3)
+#         chains = state.interview_chains.get_chains(llm)
+#         st.write("Model has been updated!")
 
 
 # Record the answer or enter long form text
