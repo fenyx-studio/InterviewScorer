@@ -215,6 +215,9 @@ if st.button("Submit Answer"):
 
         async def generate_concurrently(chains, interviewer_question, interviewee_answer):
             tasks = [async_run(chain, interviewer_question, interviewee_answer, chain_id) for chain_id, chain in chains.items()]
+            total_persona1_score = 0
+            total_persona2_score = 0
+            total_persona3_score = 0
             for future in asyncio.as_completed(tasks):
                 chain_id, result = await future
                 chain_role = chain_id # chain_id is already the key you want
@@ -238,11 +241,42 @@ if st.button("Submit Answer"):
                 # Extract the score and note to judge
                 score = parsed_result.get('score')
                 perspective = parsed_result.get('perspective')
+                stricter_score = parsed_result.get('stricter_score')
 
                 # Get the emoji for the score
                 emoji = get_emoji(score)
 
                 messages[chain_role] = f"**{chain_role}'s Score is in!** \n\n**Perspective:** {perspective} \n\n**Score:** {score}/10"
+
+                # have three totals of scores based on the persona. total_persona1_score, total_persona2_score, total_persona3_score. each persona is identified by the chain_id (persona1_rubric1, persona2_rubric1, persona3_rubric1), where the first part of the chain_id is the persona and the second part is the rubric. 
+                if chain_id == 'persona1_rubric1' or chain_id == 'persona1_rubric2' or chain_id == 'persona1_rubric3' or chain_id == 'persona1_rubric4':
+                    total_persona1_score += stricter_score
+                elif chain_id == 'persona2_rubric1' or chain_id == 'persona2_rubric2' or chain_id == 'persona2_rubric3' or chain_id == 'persona2_rubric4':
+                    total_persona2_score += stricter_score
+                elif chain_id == 'persona3_rubric1' or chain_id == 'persona3_rubric2' or chain_id == 'persona3_rubric3' or chain_id == 'persona3_rubric4':
+                    total_persona3_score += stricter_score
+
+            # Calculate the average
+            average_persona1_score = total_persona1_score / 3
+            average_persona2_score = total_persona2_score / 3
+            average_persona3_score = total_persona3_score / 3
+
+            # Calculate the total average
+            total_average_score = (average_persona1_score + average_persona2_score + average_persona3_score) / 3
+
+            # Assign a grade
+            grade = ''
+            if total_average_score >= 28:
+                grade = 'A'
+            elif total_average_score >= 20:
+                grade = 'B'
+            else:
+                grade = 'C'
+
+            # Display the grade
+            grade_images = {'A': 'letter_a.png', 'B': 'letter_b.jiff', 'C': 'letter_c.png'}  # assuming you have images named A.png, B.png and C.png
+
+            st.image(grade_images[grade], caption=f'Grade: {grade}')
 
             # Now all chains have finished, run the synthesis chain
             synthesis_chain = state.interview_chains.get_synthesis_chain(llm)  # Ensure you have defined get_synthesis_chain method
