@@ -274,7 +274,7 @@ if st.button("Submit Answer"):
             average_persona3_score = total_persona3_score / 3
 
             # Calculate the total average
-            total_average_score = (average_persona1_score + average_persona2_score + average_persona3_score) / 3
+            total_average_score = average_persona1_score + average_persona2_score + average_persona3_score
 
             # Assign a grade
             grade = ''
