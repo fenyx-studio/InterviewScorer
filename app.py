@@ -141,6 +141,17 @@ def get_emoji(score):
         return "😊"
     else:
         return "😄"
+    
+# In your sidebar
+st.sidebar.header("Feedback")
+st.sidebar.write("Please leave your feedback below:")
+feedback = st.sidebar.text_area("Your feedback here...")
+email = st.sidebar.text_input("Email (optional):")
+
+if st.sidebar.button("Submit"):
+    # handle sending feedback here, e.g., store in a database or send email
+    # This part depends on how you're planning to handle feedback.
+    st.sidebar.success("Thank you for your feedback!")
 
 async def synthesis_run(chain, chain_results):
             # Extract perspectives and advices
@@ -308,12 +319,12 @@ if st.button("Submit Answer"):
         asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
 
     # Sort the messages by chain_role and display them
-    for chain_role in sorted(messages):
+    #for chain_role in sorted(messages):
         # Display the success message with the emoji
-        score_expander = st.expander(f"{chain_role}'s Score")
-        with score_expander:
-            st.sidebar.success(messages[chain_role], icon=get_emoji(chain_results[chain_role]['score']))
-
+        #score_expander = st.expander(f"{chain_role}'s Score")
+        #with score_expander:
+            #st.sidebar.success(messages[chain_role], icon=get_emoji(chain_results[chain_role]['score']))
+"""
     
     # Extract scores and feedback
     chain_scores = {}
@@ -352,5 +363,5 @@ if st.button("Submit Answer"):
             st.markdown(f"** {chain_id} Stricter Score:** {stricter_score}/10")
             st.markdown(f"** {chain_id} Confidence:** {confidence}/5")
             
-
+"""
 
