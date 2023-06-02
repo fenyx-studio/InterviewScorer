@@ -262,11 +262,20 @@ if st.button("Submit Answer"):
 
                 # have three totals of scores based on the persona. total_persona1_score, total_persona2_score, total_persona3_score. each persona is identified by the chain_id (persona1_rubric1, persona2_rubric1, persona3_rubric1), where the first part of the chain_id is the persona and the second part is the rubric. 
                 if chain_id == 'persona1_rubric1' or chain_id == 'persona1_rubric2' or chain_id == 'persona1_rubric3' or chain_id == 'persona1_rubric4':
-                    total_persona1_score += float(stricter_score)
+                    if float(stricter_score) > float(score):
+                        total_persona1_score += float(score)
+                    else:
+                        total_persona1_score += float(stricter_score)
                 elif chain_id == 'persona2_rubric1' or chain_id == 'persona2_rubric2' or chain_id == 'persona2_rubric3' or chain_id == 'persona2_rubric4':
-                    total_persona2_score += float(stricter_score)
+                    if float(stricter_score) > float(score):
+                        total_persona1_score += float(score)
+                    else:
+                        total_persona1_score += float(stricter_score)
                 elif chain_id == 'persona3_rubric1' or chain_id == 'persona3_rubric2' or chain_id == 'persona3_rubric3' or chain_id == 'persona3_rubric4':
-                    total_persona3_score += float(stricter_score)
+                    if float(stricter_score) > float(score):
+                        total_persona1_score += float(score)
+                    else:
+                        total_persona1_score += float(stricter_score)
 
             # Calculate the average
             average_persona1_score = total_persona1_score / 3
