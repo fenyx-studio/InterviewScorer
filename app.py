@@ -294,26 +294,9 @@ if st.button("Submit Answer"):
             synthesis_chain = state.interview_chains.get_synthesis_chain(llm)  # Ensure you have defined get_synthesis_chain method
             synthesis_result = await synthesis_run(synthesis_chain, chain_results)
             # Here you can do something with the synthesis_result
-            with st.expander(f"JSON Synthesis Results"):
-                st.write(synthesis_result)
+            # with st.expander(f"JSON Synthesis Results"):
+            #     st.write(synthesis_result)
 
-            # create the modal
-            feedback_modal = Modal("Feedback Form")
-            give_feedback = st.button("Give Feedback")
-            if give_feedback:
-                feedback_modal.open()
-
-            if feedback_modal.is_open():
-                with feedback_modal.container():
-                    st.write("Please leave your feedback below:")
-                    feedback = st.text_area("Your feedback here...")
-                    email = st.text_input("Email (optional):")
-
-                    if st.button("Send"):
-                        # handle sending feedback here, e.g., store in a database or send email
-                        # This part depends on how you're planning to handle feedback.
-                        st.success("Thank you for your feedback!")
-                        feedback_modal.close()
 
         # Assuming chains is a dictionary where the keys are chain_ids and the values are the chains themselves
         asyncio.run(generate_concurrently(chains, test_interviewer_question, test_interviewee_answer))
