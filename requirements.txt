@@ -4,3 +4,4 @@ langchain
 audio-recorder-streamlit
 openai
 promptlayer
+streamlit-modal
