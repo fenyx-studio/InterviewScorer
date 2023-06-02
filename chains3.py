@@ -1,6 +1,7 @@
 from langchain import PromptTemplate
 from langchain.chains import LLMChain
 
+
 class ChainCreator:
     def __init__(self, llm, persona_component, rubric_component):
         self.llm = llm
@@ -22,7 +23,8 @@ class ChainCreator:
         The JSON object:
         """
 
-        prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response"], template=template)
+        prompt = PromptTemplate(input_variables=[
+                                "interviewer_question", "interviewee_response"], template=template)
 
         return LLMChain(llm=self.llm, prompt=prompt)
 
@@ -30,13 +32,26 @@ class ChainCreator:
 class InterviewChains:
     def __init__(self):
         self.components = {
-            'persona1_component':"Persona 1",
-            'persona2_component':"Persona 2",
-            'persona3_component':"Persona 3",
-            'rubric1_component':"Rubric 1",
-            'rubric2_component':"Rubric 2",
-            'rubric3_component':"Rubric 3",
-            'rubric4_component':"Rubric 4"
+            'persona1_component':
+            "You are an experienced HR professional with several decades of experience interviewing candidates for roles. You have a talent for evaluating interview answers because you pay attention to its nuances and details. You are concerned with areas like professionalism, passion, teamwork, and emotional intelligence. You have very high standards when it comes to interview answers and only like candidates who give well-reasoned with supporting evidence.",
+
+            'persona2_component':
+            "You are a public speaking coach with several decades of experience helping people express themselves in public. You specialize in helping people speak in a clear, precise, and detailed manner. You are also understand how people can present themselves in a positive, impactful way and are capable of giving advice on how they can do better. You are concerned with communication style, speaking clarity, enthusiasm, and sophistication in speech. You have very high standards when it comes to interview answers and only like candidates who give well-reasoned answers with supporting evidence.",
+
+            'persona3_component':
+            "You are a professional mentor with several decades of experience helping people advance their careers. You specialize in helping people talk about themselves and their achievements in an effective and impactful way. You have seen many individuals grow and change in their career and are aware of what it takes to become a better professional. You are concerned with growth, learning on the job, building relationships, and being career-driven. You have very high standards when it comes to interview answers and only like candidates who give well-reasoned answers with supporting evidence.",
+
+            'rubric1_component':
+            "Rubric #1: Evaluate the job interview response only on the following criteria and no other factors: The amount of effort made and adversity faced by the interviewee in their response Evaluate the number of distinct skills supported by specific evidence conveyed by the interviewee in their response The number of distinct positive personality traits supported by specific evidence conveyed by the interviewee in their response, giving a higher score the more there are The degree to which the interviewee’s actions had an impacted the situation",
+
+            'rubric2_component':
+            "Rubric #2: Evaluate the job interview response only on the following criteria and no other factors: Situation: The clarity and specificity with which the situation or context of the anecdote is described Task: The clarity and specificity with which the specific tasks the interviewee had to accomplish are described Actions: The clarity and specificity with which the interviewee describes the actions taken to accomplish the task Rationale: The clarity and specificity with which the interviewee describes his or her thought process behind the actions taken Outcome: The clarity and specificity with which the interviewee describes the outcomes or results of the action that they took and the resolution of the situation Personal Takeaway: The clarity and specificity with which the interviewee describes the lessons learned in the process of tackling the situation in their response and the actions they took",
+
+            'rubric3_component':
+            "Rubric #3: Evaluate the job interview response only on the following criteria and no other factors: The degree to which the interviewee presents themselves as proactive and self-driven in their answer The degree to which the interviewee presents themselves as autonomous and responsible in their decision-making in the answer The degree to which the interviewee’s actions impact or improve the situation as described in their answer",
+
+            'rubric4_component':
+            "Rubric #4: Evaluate the job interview response only on the following criteria and no other factors: How organized the response is and whether the points flow logically The response’s relevance to the question asked The succinctness of the response; deduct points if it is too repetitive or wordy"
         }
 
         self.chain_ids = {
@@ -53,7 +68,6 @@ class InterviewChains:
             'persona3_rubric3': "Persona 3 - Rubric 3",
             'persona3_rubric4': "Persona 3 - Rubric 4"
         }
-
 
     def set_component(self, component_name, new_text):
         if component_name in self.components:
@@ -75,10 +89,12 @@ class InterviewChains:
             persona_component = self.components[persona + "_component"]
             rubric_component = self.components[rubric + "_component"]
 
-            chains[key] = ChainCreator(llm, persona_component, rubric_component).create() # use key instead of value
+            # use key instead of value
+            chains[key] = ChainCreator(
+                llm, persona_component, rubric_component).create()
 
         return chains
-    
+
     def get_synthesis_chain(self, llm):
         template = """
 
@@ -104,7 +120,7 @@ class InterviewChains:
         The JSON object:
         """
 
-        prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response", "persona1_opinions", "persona2_opinions", "persona3_opinions", "persona1_tactical_advices", "persona2_tactical_advices", "persona3_tactical_advices"], template=template)
+        prompt = PromptTemplate(input_variables=["interviewer_question", "interviewee_response", "persona1_opinions", "persona2_opinions",
+                                "persona3_opinions", "persona1_tactical_advices", "persona2_tactical_advices", "persona3_tactical_advices"], template=template)
 
         return LLMChain(llm=llm, prompt=prompt)
-
